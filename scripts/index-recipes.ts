@@ -12,10 +12,8 @@ import { deaccent } from "../src/util.js";
 const RECIPE_INDEX = "/recept";
 const INDEX_FILENAME = "recipe-index.json";
 
-const scriptUrl = import.meta.url.replace("file:///", "");
-const scriptPath = path.resolve(scriptUrl);
-const scriptDir = path.dirname(scriptPath);
-const recipesDir = path.resolve(scriptDir, "..", "src/pages/recept");
+const cwd = process.cwd();
+const recipesDir = path.resolve(cwd, "src/pages/recept");
 
 if (!fs.existsSync(recipesDir)) {
   throw new Error(`recipes not found (tried: ${recipesDir})`);
@@ -26,7 +24,7 @@ const recipePaths = fs
   .filter((f) => path.extname(f) === ".md")
   .map((p) => path.resolve(recipesDir, p));
 
-const outFile = path.resolve(scriptDir, "..", "public", INDEX_FILENAME);
+const outFile = path.resolve(cwd, "public", INDEX_FILENAME);
 
 const indexedRecipes = recipePaths.map(indexRecipe).sort(compareIndexedRecipes);
 const index = JSON.stringify(indexedRecipes, null, 2);
