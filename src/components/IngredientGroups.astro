@@ -1,0 +1,19 @@
+---
+import type { IngredientGroup } from "../types.js";
+import IngredientList from "./IngredientList.astro";
+
+interface Props {
+  groups: IngredientGroup[]
+}
+
+const { groups } = Astro.props;
+---
+
+<ul>
+  {groups.map(g => (
+    <li class="mb-1">
+      <h3 class="italic">{g.name}</h3>
+      <IngredientList ingredients={g.ingredients} />
+    </li>
+  ))}
+</ul>

@@ -1,0 +1,69 @@
+---
+import {
+  parseIngredients,
+  isIngredientList,
+  isIngredientGroups,
+  Ingredients,
+} from "../ingredients.js";
+import MainLayout from "./Main.astro";
+import IngredientList from "~/components/IngredientList.astro";
+import IngredientGroups from "~/components/IngredientGroups.astro";
+
+type UncheckedFrontmatter = {
+  title?: string;
+  author?: string;
+  ingredients?: string;
+  file: string;
+  url: string;
+};
+
+type Frontmatter = {
+  title: string;
+  author?: string | undefined;
+  ingredients: Ingredients;
+  url: string;
+};
+
+const fm = validateFrontmatter(Astro.props.frontmatter as UncheckedFrontmatter);
+
+function validateFrontmatter(fm: UncheckedFrontmatter): Frontmatter {
+  if (!fm.title) {
+    throw new Error(`title missing`);
+  }
+
+  if (!fm.ingredients) {
+    throw new Error(`ingredient list missing`);
+  }
+
+  // Last entry is always an empty line
+  const ingredients = parseIngredients(fm.ingredients);
+
+  return {
+    title: fm.title,
+    author: fm.author,
+    ingredients,
+    url: fm.url,
+  };
+}
+---
+
+<MainLayout title={fm.title}>
+  <article class="relative lg:grid lg:grid-cols-[0.75fr_1.25fr_0.5fr] xl:grid-cols-[0.75fr_1fr_0.75fr] gap-2 p-2">
+    <h1 class="w-full max-w-xl mx-auto p-2 text-3xl font-bold col-start-2">{fm.title}</h1>
+    <section class="justify-self-end col-start-1 p-2 lg:sticky top-2 max-w-xl mx-auto lg:w-96 lg:max-h-[calc(100vh_-_8px)] lg:mr-0 overflow-auto">
+      <h3 class="text-lg font-bold">Hozzávalók</h3>
+      {isIngredientList(fm.ingredients) && <IngredientList ingredients={fm.ingredients.list} />}
+      {isIngredientGroups(fm.ingredients) && <IngredientGroups groups={fm.ingredients.groups} />}
+    </section>
+    <section class="col-start-2 w-full mx-auto max-w-xl p-2">
+      <h3 class="text-lg font-bold">Elkészítés</h3>
+      <slot />
+    </section>
+  </article>
+</MainLayout>
+
+<style is:global>
+  p {
+    margin-bottom: 0.5rem;
+  }
+</style>

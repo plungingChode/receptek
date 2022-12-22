@@ -1,0 +1,22 @@
+---
+import MainLayout from "~/layouts/Main.astro";
+import RecipeThumbnail from "~/components/RecipeThumbnail.astro";
+import recipeIndex from "../../../public/recipe-index.json";
+---
+
+<MainLayout>
+  <main class="p-2 md:p-4">
+    <div class="grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,_24rem)] justify-center gap-4 mx-auto">
+      {
+        recipeIndex.map((r) => (
+          <RecipeThumbnail
+            title={r.title}
+            author={r.author}
+            slug={r.slug}
+            ingredients={r.ingredients}
+          />
+        ))
+      }
+    </div>
+  </main>
+</MainLayout>

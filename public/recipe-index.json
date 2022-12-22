@@ -1,0 +1,279 @@
+[
+  {
+    "ingredients": [
+      {
+        "name": "rétesliszt",
+        "qty": 30,
+        "unit": "dkg"
+      },
+      {
+        "name": "cukor",
+        "qty": 20,
+        "unit": "dkg"
+      },
+      {
+        "name": "margarin",
+        "qty": 15,
+        "unit": "dkg"
+      },
+      {
+        "name": "tojás",
+        "qty": 4,
+        "unit": "db"
+      },
+      {
+        "name": "sütőpor",
+        "qty": 0.5,
+        "unit": "csomag"
+      },
+      {
+        "name": "vaj",
+        "qty": 20,
+        "unit": "dkg"
+      },
+      {
+        "name": "porcukor",
+        "qty": 10,
+        "unit": "dkg"
+      },
+      {
+        "name": "dió",
+        "qty": 20,
+        "unit": "dkg"
+      },
+      {
+        "name": "morzsa (?)",
+        "qty": 10,
+        "unit": "dkg"
+      },
+      {
+        "name": "kakó",
+        "qty": 0.5,
+        "unit": "dkg"
+      },
+      {
+        "name": "kubév likőr (?)"
+      },
+      {
+        "name": "rum"
+      },
+      {
+        "name": "tésztos (?)"
+      },
+      {
+        "name": "lízór (?)"
+      }
+    ],
+    "ingredients_search": "retesliszt-cukor-margarin-tojas-sutopor-vaj-porcukor-dio-morzsa (?)-kako-kubev likor (?)-rum-tesztos (?)-lizor (?)",
+    "slug": "/recept/angela-suti",
+    "title": "Angéla süti",
+    "author": "Anya"
+  },
+  {
+    "ingredients": [
+      {
+        "name": "margarin",
+        "qty": 20,
+        "unit": "dkg"
+      },
+      {
+        "name": "cukor",
+        "qty": 20,
+        "unit": "dkg"
+      },
+      {
+        "name": "tojás",
+        "qty": 3,
+        "unit": "db"
+      },
+      {
+        "name": "tej",
+        "qty": 0.5,
+        "unit": "liter"
+      },
+      {
+        "name": "liszt",
+        "qty": 50,
+        "unit": "dkg"
+      },
+      {
+        "name": "sütőpor",
+        "qty": 1,
+        "unit": "csomag"
+      },
+      {
+        "name": "vaníliás cukor",
+        "qty": 1,
+        "unit": "csomag"
+      },
+      {
+        "name": "citrom",
+        "qty": 1,
+        "unit": "db"
+      },
+      {
+        "name": "só"
+      }
+    ],
+    "ingredients_search": "margarin-cukor-tojas-tej-liszt-sutopor-vanilias cukor-citrom-so",
+    "slug": "/recept/gofri",
+    "title": "Gofri"
+  },
+  {
+    "ingredients": [
+      {
+        "name": "finomliszt",
+        "qty": 50,
+        "unit": "dkg"
+      },
+      {
+        "name": "kristálycukor",
+        "qty": 15,
+        "unit": "dkg"
+      },
+      {
+        "name": "méz",
+        "qty": 2,
+        "unit": "dl"
+      },
+      {
+        "name": "vaj vagy margarin",
+        "qty": 15,
+        "unit": "dkg"
+      },
+      {
+        "name": "tojás",
+        "qty": 1,
+        "unit": "db"
+      },
+      {
+        "name": "tej vagy tejszín",
+        "qty": 1,
+        "unit": "dl"
+      },
+      {
+        "name": "szódabikarbóna",
+        "qty": 1,
+        "unit": "kávéskanál"
+      },
+      {
+        "name": "fahéj",
+        "qty": 1,
+        "unit": "evőkanál"
+      },
+      {
+        "name": "szegfűszeg"
+      },
+      {
+        "name": "gyömbér (darált)"
+      },
+      {
+        "name": "ánizs (darált)"
+      },
+      {
+        "name": "porcukor",
+        "qty": 12,
+        "unit": "dkg"
+      },
+      {
+        "name": "tojásfehérje",
+        "qty": 1,
+        "unit": "db"
+      },
+      {
+        "name": "rizsliszt",
+        "qty": 2,
+        "unit": "dkg"
+      }
+    ],
+    "ingredients_search": "finomliszt-kristalycukor-mez-vaj vagy margarin-tojas-tej vagy tejszin-szodabikarbona-fahej-szegfuszeg-gyomber (daralt)-anizs (daralt)-porcukor-tojasfeherje-rizsliszt",
+    "slug": "/recept/mezeskalacs",
+    "title": "Mézeskalács karácsonyi figura",
+    "author": "Mama"
+  },
+  {
+    "ingredients": [
+      {
+        "name": "porcukor",
+        "qty": 22,
+        "unit": "dkg"
+      },
+      {
+        "name": "tojás",
+        "qty": 6,
+        "unit": "db"
+      },
+      {
+        "name": "vaníliapuding",
+        "qty": 4,
+        "unit": "csomag"
+      },
+      {
+        "name": "sütőpor"
+      },
+      {
+        "name": "margarin",
+        "qty": 25,
+        "unit": "dkg"
+      },
+      {
+        "name": "porcukor",
+        "qty": 25,
+        "unit": "dkg"
+      },
+      {
+        "name": "vaníliás cukor",
+        "qty": 2,
+        "unit": "csomag"
+      },
+      {
+        "name": "túró"
+      }
+    ],
+    "ingredients_search": "porcukor-tojas-vaniliapuding-sutopor-margarin-porcukor-vanilias cukor-turo",
+    "slug": "/recept/turos-szelet",
+    "title": "Túrós szelet",
+    "author": "Mama"
+  },
+  {
+    "ingredients": [
+      {
+        "name": "vaj",
+        "qty": 25,
+        "unit": "dkg"
+      },
+      {
+        "name": "porcukor",
+        "qty": 20,
+        "unit": "dkg"
+      },
+      {
+        "name": "vaníliás cukor",
+        "qty": 2,
+        "unit": "csomag"
+      },
+      {
+        "name": "tojás",
+        "qty": 2,
+        "unit": "db"
+      },
+      {
+        "name": "túró",
+        "qty": 1,
+        "unit": "kg"
+      },
+      {
+        "name": "tej",
+        "qty": 3,
+        "unit": "dl"
+      },
+      {
+        "name": "zselatin"
+      }
+    ],
+    "ingredients_search": "vaj-porcukor-vanilias cukor-tojas-turo-tej-zselatin",
+    "slug": "/recept/turotorta",
+    "title": "Túrótorta",
+    "author": "Anya"
+  }
+]
