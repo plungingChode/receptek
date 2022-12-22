@@ -30,8 +30,11 @@ export function isUndefined(v: unknown): v is undefined {
   return typeof v === "undefined";
 }
 
-const BASE_URL = import.meta.env.BASE_URL || "";
-
 export function href(path: string): string {
-  return (BASE_URL + path).replaceAll("//", "/");
+  if ("env" in import.meta) {
+    // FIXME looks awful, required because of ts-node
+    const baseUrl = (import.meta["env" as keyof ImportMeta] as any).BASE_URL;
+    return (baseUrl + path).replaceAll("//", "/");
+  }
+  return path;
 }
