@@ -30,11 +30,9 @@ export function isUndefined(v: unknown): v is undefined {
   return typeof v === "undefined";
 }
 
+const BASE_URL = "/receptek";
+
 export function href(path: string): string {
-  if ("env" in import.meta) {
-    // FIXME looks awful, required because of ts-node
-    const baseUrl = (import.meta["env" as keyof ImportMeta] as any).BASE_URL;
-    return (baseUrl + path).replaceAll("//", "/");
-  }
-  return path;
+  // FIXME looks awful, required because of ts-node
+  return (BASE_URL + path).replaceAll("//", "/");
 }
