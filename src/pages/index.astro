@@ -1,9 +1,13 @@
+---
+import { href } from "~/util.js";
+---
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta http-equiv="refresh" content="0; url=./recept" />
-</head>
-<body>
-    <p>Go to <a href="/recept">recipes</a></p>
-</body>
+  </head>
+  <body>
+    <p>Go to <a href={href("/recept")}>recipes</a></p>
+  </body>
 </html>

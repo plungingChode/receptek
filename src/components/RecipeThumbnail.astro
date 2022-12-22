@@ -1,5 +1,6 @@
 ---
-import type { Ingredient } from "~/types";
+import type { Ingredient } from "~/types.js";
+import { href } from "~/util.js";
 
 interface Props {
   title: string;
@@ -15,7 +16,7 @@ const ingredientString = ingredients.map((i) => i.name).join(", ");
 
 <a
   class="h-52 py-3 border border-cozy-red/20 shadow-md bg-cozy-light-beige/80 hover:bg-cozy-light-beige shadow-cozy-brown/20 cursor-pointer"
-  href={slug}
+  href={href(slug)}
 >
   <h3
     class="ribbon relative w-10/12 p-1 pl-3 -ml-2 text-lg text-cozy-light-beige font-bold truncate bg-cozy-red rounded-r-lg rounded-t-lg shadow-sm shadow-cozy-red/75"

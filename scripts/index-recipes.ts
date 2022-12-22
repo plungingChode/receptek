@@ -10,7 +10,7 @@ import type { Ingredient } from "../src/types.js";
 import { deaccent } from "../src/util.js";
 
 const RECIPE_INDEX = "/recept";
-const INDEX_FILENAME = env("PUBLIC_RECIPE_INDEX");
+const INDEX_FILENAME = "recipe-index.json";
 
 const scriptUrl = import.meta.url.replace("file:///", "");
 const scriptPath = path.resolve(scriptUrl);
