@@ -15,16 +15,16 @@ const ingredientString = ingredients.map((i) => i.name).join(", ");
 ---
 
 <a
-  class="h-52 py-3 border border-cozy-red/20 shadow-md bg-cozy-light-beige/80 hover:bg-cozy-light-beige shadow-cozy-brown/20 cursor-pointer"
+  class="h-52 py-3 border border-cozy-red-500/20 shadow-md bg-cozy-beige-200 hover:bg-cozy-beige-100 text-cozy-beige-200 hover:text-cozy-beige-100 shadow-cozy-brown-700/20 cursor-pointer"
   href={href(slug)}
 >
   <h3
-    class="ribbon relative w-10/12 p-1 pl-3 -ml-2 text-lg text-cozy-light-beige font-bold truncate bg-cozy-red rounded-r-lg rounded-t-lg shadow-sm shadow-cozy-red/75"
+    class="ribbon relative w-10/12 p-1 pl-3 -ml-2 text-lg text-inherit font-bold truncate bg-cozy-red-500 rounded-r-lg rounded-t-lg shadow-sm shadow-cozy-red-500/75"
     title={title}
   >
     {title}
   </h3>
-  <p class="ml-3 mt-1 italic">
+  <p class="ml-3 mt-1 italic text-black">
     {
       author ? (
         <>
@@ -36,7 +36,7 @@ const ingredientString = ingredients.map((i) => i.name).join(", ");
       )
     }
   </p>
-  <p class="m-3 max-4-lines">
+  <p class="m-3 max-4-lines text-black">
     {ingredientString}
   </p>
 </a>
