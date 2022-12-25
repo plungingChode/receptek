@@ -23,11 +23,13 @@ function formatQuantity(n: number): string {
       <>
         <span class:list={["flex items-center", { "col-span-full": isUndefined(i.qty) }]}>
           <span>{i.name}</span>
-          {!isUndefined(i.qty) && <hr class="flex-grow ml-2 mt-1 border-cozy-brown-700/50" />}
+          {!isUndefined(i.qty) && (
+            <hr class="flex-grow ml-2 mt-1 border-cozy-brown-700/50 dark:border-cozy-beige-800" />
+          )}
         </span>
         {!isUndefined(i.qty) && (
           <span class="flex items-center">
-            <hr class="flex-grow mr-2 mt-1 border-cozy-brown-700/50" />
+            <hr class="flex-grow mr-2 mt-1 border-cozy-brown-700/50 dark:border-cozy-beige-800" />
             <span class="text-right mr-1">{formatQuantity(i.qty)}</span>
           </span>
         )}

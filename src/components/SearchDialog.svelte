@@ -5,7 +5,6 @@ import { deaccent, href } from "~/util.js";
 import { debounce } from "lodash-es";
 import fuzzysort from "fuzzysort";
 import recipeIndex from "../data/recipe-index.json";
-import SearchIcon from "./SearchIcon.svelte";
 
 type PreparedRecipeIndex = typeof recipeIndex[number] & {
   prepared_search: Fuzzysort.Prepared;
@@ -37,7 +36,7 @@ const documentOverflow = {
 let container: HTMLDivElement;
 let focusTrap: FocusTrap | null = null;
 let originalOverflow: string = "auto auto";
-let search: string = "mez";
+let search: string = "";
 let searchResult = EMPTY_RESULT_SET;
 
 const dispatch = createEventDispatcher<{
@@ -96,18 +95,20 @@ onMount(() => {
   focusTrap.activate();
   originalOverflow = documentOverflow.get();
   documentOverflow.set("hidden hidden");
+  window.addEventListener("popstate", close);
 });
 
 onDestroy(() => {
   documentOverflow.set(originalOverflow);
   focusTrap?.deactivate();
+  window.removeEventListener("popstate", close);
 });
 </script>
 
 <div
   bind:this={container}
   class="
-    fixed flex flex-col top-0 left-0 w-screen h-screen p-[2vh] sm:p-[10vh] 
+    fixed flex flex-col z-50 top-0 left-0 w-screen h-screen p-[2vh] sm:p-[10vh] 
     bg-cozy-brown-500/50 
     dark:bg-cozy-brown-900/50 
     backdrop-blur-sm
@@ -126,8 +127,8 @@ onDestroy(() => {
   >
     <header class="px-4 border-b border-cozy-beige-300 dark:border-cozy-beige-800/70">
       <form class="flex items-center">
-        <label for="search-box" class="mr-3">
-          <SearchIcon />
+        <label for="search-box" class="mr-3 font-icon text-xl">
+          search
         </label>
         <input
           type="text"
@@ -147,7 +148,7 @@ onDestroy(() => {
     </header>
     <div class="results flex flex-col gap-2 py-4 px-5 overflow-y-auto">
       {#if searchResult.length === 0}
-        <p class="py-8 px-2">(Nincs találat)</p>
+        <p class="py-8 px-2 mx-auto">Nincs találat</p>
       {:else}
         {#each searchResult as result, i (result.obj.slug)}
           <a

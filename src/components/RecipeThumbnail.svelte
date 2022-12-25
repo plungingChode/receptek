@@ -20,14 +20,14 @@ export let ingredients: string;
 >
   <h3
     class="
-      ribbon relative w-10/12 p-1 pl-3 -ml-2 
-      text-lg text-inherit font-bold truncate 
+      ribbon relative flex w-10/12 p-1 pl-3 -ml-2 
+      text-lg text-inherit font-bold
       bg-cozy-red-500 rounded-r-lg rounded-t-lg 
       shadow-sm shadow-cozy-red-500/75 
       dark:bg-cozy-red-700 dark:shadow-cozy-red-900/75
     "
   >
-    <span class="ml-2">{title}</span>
+    <span class="ml-2 max-w-full truncate">{title}</span>
   </h3>
   <p class="ml-3 mt-1 italic text-black dark:text-cozy-beige-200">
     {#if author}

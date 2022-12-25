@@ -1,11 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{astro,svelte}"],
+  darkMode: "class",
   theme: {
     extend: {
       fontFamily: {
         body: "'Roboto Slab', serif",
         caveat: "'Caveat', cursive",
+        icon: "'Material Symbols Outlined'"
       },
     },
     colors: {
