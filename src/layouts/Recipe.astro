@@ -8,6 +8,7 @@ import {
 import MainLayout from "./Main.astro";
 import IngredientList from "~/components/IngredientList.astro";
 import IngredientGroups from "~/components/IngredientGroups.astro";
+import SearchButton from "~/components/SearchButton.svelte";
 
 type UncheckedFrontmatter = {
   title?: string;
@@ -48,9 +49,14 @@ function validateFrontmatter(fm: UncheckedFrontmatter): Frontmatter {
 ---
 
 <MainLayout title={fm.title}>
-  <article class="relative lg:grid lg:grid-cols-[0.75fr_1.25fr_0.5fr] xl:grid-cols-[0.75fr_1fr_0.75fr] gap-2 p-2">
+  <SearchButton slot="actions" client:load />
+  <article
+    class="relative lg:grid lg:grid-cols-[0.75fr_1.25fr_0.5fr] xl:grid-cols-[0.75fr_1fr_0.75fr] gap-2 p-2"
+  >
     <h1 class="w-full max-w-xl mx-auto p-2 text-3xl font-bold col-start-2">{fm.title}</h1>
-    <section class="justify-self-end col-start-1 p-2 lg:sticky top-2 max-w-xl mx-auto lg:w-96 lg:max-h-[calc(100vh_-_8px)] lg:mr-0 overflow-auto">
+    <section
+      class="justify-self-end col-start-1 p-2 lg:pl-6 lg:sticky top-2 max-w-xl mx-auto lg:w-96 lg:max-h-[calc(100vh_-_8px)] lg:mr-0 overflow-auto"
+    >
       <h3 class="text-lg font-bold">Hozzávalók</h3>
       {isIngredientList(fm.ingredients) && <IngredientList ingredients={fm.ingredients.list} />}
       {isIngredientGroups(fm.ingredients) && <IngredientGroups groups={fm.ingredients.groups} />}
