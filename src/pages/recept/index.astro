@@ -1,11 +1,11 @@
 ---
 import MainLayout from "~/layouts/Main.astro";
-import RecipeThumbnail from "~/components/RecipeThumbnail.astro";
-import recipeIndex from "../../../public/recipe-index.json";
+import RecipeThumbnail from "~/components/RecipeThumbnail.svelte";
+import recipeIndex from "~/data/recipe-index.json";
 ---
 
 <MainLayout>
-  <main class="p-2 md:p-4">
+  <main class="p-4">
     <div class="grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,_24rem)] justify-center gap-4 mx-auto">
       {
         recipeIndex.map((r) => (

@@ -24,7 +24,7 @@ const recipePaths = fs
   .filter((f) => path.extname(f) === ".md")
   .map((p) => path.resolve(recipesDir, p));
 
-const outFile = path.resolve(cwd, "public", INDEX_FILENAME);
+const outFile = path.resolve(cwd, "src/data", INDEX_FILENAME);
 
 const indexedRecipes = recipePaths.map(indexRecipe).sort(compareIndexedRecipes);
 const index = JSON.stringify(indexedRecipes, null, 2);
@@ -33,8 +33,9 @@ fs.writeFileSync(outFile, index, { encoding: "utf-8", flag: "w" });
 type IndexedRecipe = {
   slug: string;
   title: string;
+  title_search: string;
   author: string | undefined;
-  ingredients: Ingredient[];
+  ingredients: string;
   ingredients_search: string;
 };
 
@@ -61,14 +62,17 @@ function indexRecipe(file: string): IndexedRecipe {
     ingredientList = ingredients.groups.flatMap((g) => g.ingredients);
   }
 
-  const ingredientsSearch = ingredientList.map((i) => deaccent(i.name.toLowerCase())).join("-");
+  const ingredientsStr = ingredientList.map((i) => i.name).join(", ");
+  const ingredientsSearch = deaccent(ingredientsStr);
+  const titleSearch = deaccent(title.toLowerCase());
   const slug = RECIPE_INDEX + "/" + path.basename(file, ".md");
 
   return {
-    ingredients: ingredientList,
+    ingredients: ingredientsStr,
     ingredients_search: ingredientsSearch,
     slug,
     title,
+    title_search: titleSearch,
     author,
   };
 }

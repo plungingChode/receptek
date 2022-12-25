@@ -1,0 +1,41 @@
+[
+  {
+    "ingredients": "rétesliszt, cukor, margarin, tojás, sütőpor, vaj, porcukor, dió, morzsa (?), kakó, kubév likőr (?), rum, tésztos (?), lízór (?)",
+    "ingredients_search": "retesliszt, cukor, margarin, tojas, sutopor, vaj, porcukor, dio, morzsa (?), kako, kubev likor (?), rum, tesztos (?), lizor (?)",
+    "slug": "/recept/angela-suti",
+    "title": "Angéla süti",
+    "title_search": "angela suti",
+    "author": "Anya"
+  },
+  {
+    "ingredients": "margarin, cukor, tojás, tej, liszt, sütőpor, vaníliás cukor, citrom, só",
+    "ingredients_search": "margarin, cukor, tojas, tej, liszt, sutopor, vanilias cukor, citrom, so",
+    "slug": "/recept/gofri",
+    "title": "Gofri",
+    "title_search": "gofri"
+  },
+  {
+    "ingredients": "finomliszt, kristálycukor, méz, vaj vagy margarin, tojás, tej vagy tejszín, szódabikarbóna, fahéj, szegfűszeg, gyömbér (darált), ánizs (darált), porcukor, tojásfehérje, rizsliszt",
+    "ingredients_search": "finomliszt, kristalycukor, mez, vaj vagy margarin, tojas, tej vagy tejszin, szodabikarbona, fahej, szegfuszeg, gyomber (daralt), anizs (daralt), porcukor, tojasfeherje, rizsliszt",
+    "slug": "/recept/mezeskalacs",
+    "title": "Mézeskalács karácsonyi figura",
+    "title_search": "mezeskalacs karacsonyi figura",
+    "author": "Mama"
+  },
+  {
+    "ingredients": "porcukor, tojás, vaníliapuding, sütőpor, margarin, porcukor, vaníliás cukor, túró",
+    "ingredients_search": "porcukor, tojas, vaniliapuding, sutopor, margarin, porcukor, vanilias cukor, turo",
+    "slug": "/recept/turos-szelet",
+    "title": "Túrós szelet",
+    "title_search": "turos szelet",
+    "author": "Mama"
+  },
+  {
+    "ingredients": "vaj, porcukor, vaníliás cukor, tojás, túró, tej, zselatin",
+    "ingredients_search": "vaj, porcukor, vanilias cukor, tojas, turo, tej, zselatin",
+    "slug": "/recept/turotorta",
+    "title": "Túrótorta",
+    "title_search": "turotorta",
+    "author": "Anya"
+  }
+]

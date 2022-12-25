@@ -12,7 +12,7 @@ const accentMap = {
 
 /**
  * Strip accented Hungarian characters from a string and replace them with their
- * non-accented counterparts.
+ * non-accented counterparts. Only checks lowercase characters.
  */
 export function deaccent(s: string): string {
   const chars = s.split("");
