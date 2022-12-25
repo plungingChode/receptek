@@ -5,7 +5,7 @@ import recipeIndex from "~/data/recipe-index.json";
 import SearchButton from "~/components/SearchButton.svelte";
 ---
 
-<MainLayout>
+<MainLayout stickyHeader>
   <SearchButton client:load slot="actions"/>
   <main class="p-4">
     <div class="grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,_24rem)] justify-center gap-4 mx-auto">

@@ -55,11 +55,13 @@ function validateFrontmatter(fm: UncheckedFrontmatter): Frontmatter {
   >
     <h1 class="w-full max-w-xl mx-auto p-2 text-3xl font-bold col-start-2">{fm.title}</h1>
     <section
-      class="justify-self-end col-start-1 p-2 lg:pl-6 lg:sticky top-2 max-w-xl mx-auto lg:w-96 lg:max-h-[calc(100vh_-_8px)] lg:mr-0 overflow-auto"
+      class="flex flex-col justify-self-end col-start-1 p-2 lg:pl-6 lg:sticky top-14 max-w-xl mx-auto lg:w-96 lg:max-h-[calc(100vh_-_64px)] lg:mr-0 overflow-hidden"
     >
       <h3 class="text-lg font-bold">Hozzávalók</h3>
-      {isIngredientList(fm.ingredients) && <IngredientList ingredients={fm.ingredients.list} />}
-      {isIngredientGroups(fm.ingredients) && <IngredientGroups groups={fm.ingredients.groups} />}
+      <div class="flex-shrink overflow-auto">
+        {isIngredientList(fm.ingredients) && <IngredientList ingredients={fm.ingredients.list} />}
+        {isIngredientGroups(fm.ingredients) && <IngredientGroups groups={fm.ingredients.groups} />}
+      </div>
     </section>
     <section class="col-start-2 w-full mx-auto max-w-xl p-2">
       <h3 class="text-lg font-bold">Elkészítés</h3>
