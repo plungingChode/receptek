@@ -23,6 +23,27 @@
     "author": "Mama"
   },
   {
+    "ingredients": "leveles tészta (mélyhűtött), póréhagyma, sárgarépa, cukkíni, brokkoli, sajt, füstölt, főtt tarja, piros húsú paprika, bazsalikom, natúr joghurt, tojás, fokhagyma, pizzafűszerkeverék, csilipor, olaj, só, bors, liszt (nyújtáshoz)",
+    "ingredients_search": "leveles teszta (melyhutott), porehagyma, sargarepa, cukkini, brokkoli, sajt, fustolt, fott tarja, piros husu paprika, bazsalikom, natur joghurt, tojas, fokhagyma, pizzafuszerkeverek, csilipor, olaj, so, bors, liszt (nyujtashoz)",
+    "slug": "/recept/sajtos-zoldsegretes",
+    "title": "Sajtos zöldségrétes",
+    "title_search": "sajtos zoldsegretes"
+  },
+  {
+    "ingredients": "tojás, margarin, porcukor, vaníliás cukor, liszt, kakaó, sütőpor, rum (vagy rum aroma), baracklekvár, csokimáz",
+    "ingredients_search": "tojas, margarin, porcukor, vanilias cukor, liszt, kakao, sutopor, rum (vagy rum aroma), baracklekvar, csokimaz",
+    "slug": "/recept/sakkos-teszta",
+    "title": "Sakkos tészta",
+    "title_search": "sakkos teszta"
+  },
+  {
+    "ingredients": "liszt, tehéntúró, vaj, tojás, só",
+    "ingredients_search": "liszt, tehenturo, vaj, tojas, so",
+    "slug": "/recept/turos-pogacsa",
+    "title": "Túrós pogácsa",
+    "title_search": "turos pogacsa"
+  },
+  {
     "ingredients": "porcukor, tojás, vaníliapuding, sütőpor, margarin, porcukor, vaníliás cukor, túró",
     "ingredients_search": "porcukor, tojas, vaniliapuding, sutopor, margarin, porcukor, vanilias cukor, turo",
     "slug": "/recept/turos-szelet",
