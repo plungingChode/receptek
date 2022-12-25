@@ -109,7 +109,7 @@ onDestroy(() => {
   bind:this={container}
   class="
     fixed flex flex-col z-50 top-0 left-0 w-screen h-screen p-[2vh] sm:p-[10vh] 
-    bg-cozy-brown-500/50 
+    bg-cozy-brown-100/50 
     dark:bg-cozy-brown-900/50 
     backdrop-blur-sm
   "
