@@ -1,5 +1,7 @@
 {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.wordWrapColumn": 100,
+    "editor.wordWrap": "bounded",
     "[javascript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
