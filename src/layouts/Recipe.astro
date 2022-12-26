@@ -13,6 +13,7 @@ import SearchButton from "~/components/SearchButton.svelte";
 type UncheckedFrontmatter = {
   title?: string;
   author?: string;
+  draft?: boolean;
   ingredients?: string;
   file: string;
   url: string;
@@ -21,6 +22,7 @@ type UncheckedFrontmatter = {
 type Frontmatter = {
   title: string;
   author?: string | undefined;
+  draft?: boolean | undefined;
   ingredients: Ingredients;
   url: string;
 };
@@ -42,6 +44,7 @@ function validateFrontmatter(fm: UncheckedFrontmatter): Frontmatter {
   return {
     title: fm.title,
     author: fm.author,
+    draft: fm.draft,
     ingredients,
     url: fm.url,
   };
@@ -53,7 +56,10 @@ function validateFrontmatter(fm: UncheckedFrontmatter): Frontmatter {
   <article
     class="relative lg:grid lg:grid-cols-[0.75fr_1.25fr_0.5fr] xl:grid-cols-[0.75fr_1fr_0.75fr] gap-2 p-2"
   >
-    <h1 class="w-full max-w-xl mx-auto p-2 text-3xl font-bold col-start-2">{fm.title}</h1>
+    <h1 class="w-full max-w-xl mx-auto p-2 text-3xl font-bold col-start-2">
+      {fm.title}
+      {fm.draft && "(nincs kész)"}
+    </h1>
     <section
       class="flex flex-col justify-self-end col-start-1 p-2 lg:pl-6 lg:sticky top-14 max-w-xl mx-auto lg:w-96 lg:max-h-[calc(100vh_-_64px)] lg:mr-0 overflow-hidden"
     >
