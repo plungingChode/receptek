@@ -2,6 +2,8 @@
 # forrás: hpqscan004.jpg
 
 layout: "~/layouts/Recipe.astro"
+draft: true
+
 title: Angéla süti
 author: Anya
 

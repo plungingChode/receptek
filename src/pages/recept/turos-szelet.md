@@ -1,5 +1,9 @@
 ---
+# forrás: hpqscan0091.jpg
+
 layout: "~/layouts/Recipe.astro"
+draft: true
+
 title: Túrós szelet
 author: Mama
 ingredients: |
