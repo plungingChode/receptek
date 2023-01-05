@@ -24,10 +24,12 @@ const recipePaths = fs
   .filter((f) => path.extname(f) === ".md")
   .map((p) => path.resolve(recipesDir, p));
 
-const outFile = path.resolve(cwd, "src/data", INDEX_FILENAME);
+const outDir = path.resolve(cwd, "src/data");
+const outFile = path.resolve(outDir, INDEX_FILENAME);
 
 const indexedRecipes = recipePaths.map(indexRecipe).sort(compareIndexedRecipes);
 const index = JSON.stringify(indexedRecipes, null, 2);
+fs.mkdirSync(outDir, { recursive: true });
 fs.writeFileSync(outFile, index, { encoding: "utf-8", flag: "w" });
 
 type IndexedRecipe = {
