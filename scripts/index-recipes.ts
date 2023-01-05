@@ -61,6 +61,7 @@ function indexRecipe(file: string): IndexedRecipe {
   } else {
     ingredientList = ingredients.groups.flatMap((g) => g.ingredients);
   }
+  ingredientList.sort((a, b) => a.name.localeCompare(b.name));
 
   const ingredientsStr = ingredientList.map((i) => i.name).join(", ");
   const ingredientsSearch = deaccent(ingredientsStr);
