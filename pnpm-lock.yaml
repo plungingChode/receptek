@@ -6,12 +6,14 @@ specifiers:
   '@types/lodash-es': ^4.17.6
   '@types/marked': ^4.0.8
   '@types/node': ^18.11.17
+  '@types/readline-sync': ^1.4.4
   astro: ^1.7.2
   dotenv: ^16.0.3
   focus-trap: ^7.2.0
   front-matter: ^4.0.2
   fuzzysort: ^2.0.4
   lodash-es: ^4.17.21
+  readline-sync: ^1.4.10
   svelte: ^3.55.0
   svelte-portal: ^2.2.0
   tailwindcss: ^3.2.4
@@ -35,8 +37,10 @@ devDependencies:
   '@types/lodash-es': 4.17.6
   '@types/marked': 4.0.8
   '@types/node': 18.11.17
+  '@types/readline-sync': 1.4.4
   dotenv: 16.0.3
   front-matter: 4.0.2
+  readline-sync: 1.4.10
   ts-node: 10.9.1_moeqx3xmzxqxagf2sz6mqkbb7m
   typescript: 4.9.4
 
@@ -897,6 +901,10 @@ packages:
   /@types/pug/2.0.6:
     resolution: {integrity: sha512-SnHmG9wN1UVmagJOnyo/qkk0Z7gejYxOYYmaAwr5u2yFYfsupN3sg10kyzN8Hep/2zbHxCnsumxOoRIRMBwKCg==}
     dev: false
+
+  /@types/readline-sync/1.4.4:
+    resolution: {integrity: sha512-cFjVIoiamX7U6zkO2VPvXyTxbFDdiRo902IarJuPVxBhpDnXhwSaVE86ip+SCuyWBbEioKCkT4C88RNTxBM1Dw==}
+    dev: true
 
   /@types/resolve/1.20.2:
     resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
@@ -3327,6 +3335,11 @@ packages:
     dependencies:
       picomatch: 2.3.1
     dev: false
+
+  /readline-sync/1.4.10:
+    resolution: {integrity: sha512-gNva8/6UAe8QYepIQH/jQ2qn91Qj0B9sYjMBBs3QOB8F2CXcKgLxQaJRP76sWVRQt+QU+8fAkCbCvjjMFu7Ycw==}
+    engines: {node: '>= 0.8.0'}
+    dev: true
 
   /recast/0.20.5:
     resolution: {integrity: sha512-E5qICoPoNL4yU0H0NoBDntNB0Q5oMSNh9usFctYniLBluTthi3RsQVBXIJNbApOlvSwW/RGxIuokPcAc59J5fQ==}
