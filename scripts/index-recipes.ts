@@ -27,7 +27,24 @@ const recipePaths = fs
 const outDir = path.resolve(cwd, "src/data");
 const outFile = path.resolve(outDir, INDEX_FILENAME);
 
-const indexedRecipes = recipePaths.map(indexRecipe).sort(compareIndexedRecipes);
+let haveErrors = false;
+const indexedRecipes: IndexedRecipe[] = [];
+for (const p of recipePaths) {
+  try {
+    indexedRecipes.push(indexRecipe(p));
+  } catch (e: unknown) {
+    haveErrors = true;
+    console.log(`Error in '${p}'`);
+    if (e instanceof Error) {
+      console.error(e.message);
+    } else {
+      console.error(e);
+    }
+  }
+}
+if (haveErrors) {
+  process.exit(1);
+}
 const index = JSON.stringify(indexedRecipes, null, 2);
 fs.mkdirSync(outDir, { recursive: true });
 fs.writeFileSync(outFile, index, { encoding: "utf-8", flag: "w" });

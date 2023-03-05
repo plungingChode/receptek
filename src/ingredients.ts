@@ -48,7 +48,7 @@ export function parseIngredient(line: string): Ingredient {
     return { name }
   }
 
-  const [qtyStr, unit] = (rest ?? "").split(" ");
+  const [qtyStr, ...unitParts] = (rest ?? "").split(" ");
 
   const qty = Number.parseFloat(qtyStr ?? "");
 
@@ -56,10 +56,10 @@ export function parseIngredient(line: string): Ingredient {
     return error("invalid name");
   } else if (!Number.isFinite(qty)) {
     return error("invalid quantity");
-  } else if (!unit) {
+  } else if (!unitParts) {
     return error("invalid unit");
   } else {
-    return { name, qty, unit };
+    return { name, qty, unit: unitParts.join(" ") };
   }
 }
 
