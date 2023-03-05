@@ -8,6 +8,7 @@ title: Sajtos zöldségrétes
 ingredients: |
   # Réteshez
   leveles tészta (mélyhűtött) -- 50 dkg
+  tojás -- 3 db
   póréhagyma -- 20 dkg
   sárgarépa -- 20 dkg
   cukkíni -- 20 dkg
@@ -26,7 +27,6 @@ ingredients: |
   bazsalikom -- 1 szál
   újhagyma -- 4 szál
   natúr joghurt -- 4 dl
-  tojás -- 3 db
   fokhagyma
   olaj
 ---
