@@ -17,11 +17,11 @@ function formatQuantity(n: number): string {
 }
 ---
 
-<div class="grid grid-cols-[minmax(100px,_200px)_minmax(30px,_50px)_minmax(30px,_50px)]">
+<div class="grid grid-cols-[minmax(100px,_200px)_minmax(30px,_50px)_minmax(30px,_100px)] items-start">
   {
     ingredients.map((i) => (
       <>
-        <span class:list={["flex items-center", { "col-span-full": isUndefined(i.qty) }]}>
+        <span class:list={["flex items-center hyphenated", { "col-span-full": isUndefined(i.qty) }]}>
           <span>{i.name}</span>
           {!isUndefined(i.qty) && (
             <hr class="flex-grow ml-2 mt-1 border-cozy-brown-700/50 dark:border-cozy-beige-800" />
@@ -38,3 +38,9 @@ function formatQuantity(n: number): string {
     ))
   }
 </div>
+
+<style>
+  .hyphenated {
+    hyphens: auto;
+  }
+</style>
