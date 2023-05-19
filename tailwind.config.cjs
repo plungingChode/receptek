@@ -15,6 +15,7 @@ module.exports = {
       black: "#000000",
       white: "#FFFFFF",
       transparent: "transparent",
+      inherit: "inherit",
       "cozy-beige": {
         DEFAULT: "#E5D8CA",
         50: "#F9F6F3",
