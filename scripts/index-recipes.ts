@@ -3,51 +3,54 @@ import "dotenv/config";
 import fm from "front-matter";
 import fs from "fs";
 import path from "path";
-
-// WTF is this module resolution? (on Windows, Node 18)
 import { isIngredientList, parseIngredients } from "../src/ingredients.js";
 import type { Ingredient } from "../src/types.js";
 import { deaccent } from "../src/util.js";
 
+// TODO read these constants from env
 const RECIPE_INDEX = "/recept";
 const INDEX_FILENAME = "recipe-index.json";
 
-const cwd = process.cwd();
-const recipesDir = path.resolve(cwd, "src/pages/recept");
+main();
 
-if (!fs.existsSync(recipesDir)) {
-  throw new Error(`recipes not found (tried: ${recipesDir})`);
-}
+function main() {
+  const cwd = process.cwd();
+  const recipesDir = path.resolve(cwd, "src/pages/recept");
 
-const recipePaths = fs
-  .readdirSync(recipesDir)
-  .filter((f) => path.extname(f) === ".md")
-  .map((p) => path.resolve(recipesDir, p));
+  if (!fs.existsSync(recipesDir)) {
+    throw new Error(`recipes not found (tried: ${recipesDir})`);
+  }
 
-const outDir = path.resolve(cwd, "src/data");
-const outFile = path.resolve(outDir, INDEX_FILENAME);
+  const recipePaths = fs
+    .readdirSync(recipesDir)
+    .filter((f) => path.extname(f) === ".md")
+    .map((p) => path.resolve(recipesDir, p));
 
-let haveErrors = false;
-const indexedRecipes: IndexedRecipe[] = [];
-for (const p of recipePaths) {
-  try {
-    indexedRecipes.push(indexRecipe(p));
-  } catch (e: unknown) {
-    haveErrors = true;
-    console.log(`Error in '${p}'`);
-    if (e instanceof Error) {
-      console.error(e.message);
-    } else {
-      console.error(e);
+  const outDir = path.resolve(cwd, "src/data");
+  const outFile = path.resolve(outDir, INDEX_FILENAME);
+
+  let haveErrors = false;
+  const indexedRecipes: IndexedRecipe[] = [];
+  for (const p of recipePaths) {
+    try {
+      indexedRecipes.push(indexRecipe(p));
+    } catch (e: unknown) {
+      haveErrors = true;
+      console.log(`Error in '${p}'`);
+      if (e instanceof Error) {
+        console.error(e.message);
+      } else {
+        console.error(e);
+      }
     }
   }
+  if (haveErrors) {
+    process.exit(1);
+  }
+  const index = JSON.stringify(indexedRecipes);
+  fs.mkdirSync(outDir, { recursive: true });
+  fs.writeFileSync(outFile, index, { encoding: "utf-8", flag: "w" });
 }
-if (haveErrors) {
-  process.exit(1);
-}
-const index = JSON.stringify(indexedRecipes, null, 2);
-fs.mkdirSync(outDir, { recursive: true });
-fs.writeFileSync(outFile, index, { encoding: "utf-8", flag: "w" });
 
 type IndexedRecipe = {
   slug: string;

@@ -2,7 +2,6 @@ import process from "process";
 import fs from "fs";
 import path from "path";
 import readline from "readline-sync";
-import { deaccent } from "../src/util.js";
 
 const TEMPLATE_FILE = "recipe-template.md";
 const RECIPES_DIR = "src/pages/recept";
@@ -60,15 +59,21 @@ async function main() {
   console.log(`✓ Created ${outFile}`);
 }
 
-function slugify(s: string): string {
-  return deaccent(s)
-    .toLocaleLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, "")
-    .replace(/[\s_-]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+/**
+ * Converts a string to a URL slug-friendly format
+ */
+function slugify(name: string): string {
+  return name
+    .normalize("NFD")
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/([^a-z0-9-])/g, "")
+    .replace(/[-]+/g, "-");
 }
 
+/**
+ * Returns the filenames of existing recipes in the `RECIPES_DIR`
+ */
 function existingRecipes(cwd: string) {
   return fs
     .readdirSync(path.join(cwd, RECIPES_DIR))
@@ -76,6 +81,10 @@ function existingRecipes(cwd: string) {
     .map((fname) => fname.slice(0, -3));
 }
 
+/**
+ * Generates a filename from a recipe slug. If there's already a file with
+ * the same name, appends an incrementing number at the end.
+ */
 function toFileName(existingRecipes: string[], s: string): string {
   const originalSlug = slugify(s);
   let slug = originalSlug;
@@ -87,6 +96,9 @@ function toFileName(existingRecipes: string[], s: string): string {
   return slug + ".md";
 }
 
+/**
+ * Prompt the user for inputs required to create a new recipe.
+ */
 async function getParameters(): Promise<{ name: string; source: string }> {
   console.log("Enter recipe details. Fields marked with '*' are required.");
   const name = readline.question("[*] Recipe name: ");
