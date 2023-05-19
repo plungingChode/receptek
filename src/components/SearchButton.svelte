@@ -9,11 +9,7 @@ const closeDialog = () => (dialogOpen = false);
 </script>
 
 <button
-  class="
-    flex items-center ml-auto px-3 md:px-5 py-2 md:py-1 text-lg rounded-lg text-white
-    md:bg-cozy-brown-600/70 hover:bg-cozy-brown-500/50 active:bg-cozy-brown-500/70
-    dark:md:bg-cozy-brown-800 dark:hover:bg-cozy-brown-700/50 dark:active:bg-cozy-brown-700/70
-  "
+  class="header-btn ml-auto px-3 md:px-5 py-2 md:py-1 text-lg text-white"
   title="Keresés"
   on:click={openDialog}
 >

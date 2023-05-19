@@ -42,12 +42,7 @@ const cycleTheme = () => {
 </script>
 
 <button
-  class="
-    flex items-center justify-center mr-2 w-9 h-9 rounded-lg font-icon text-xl
-    text-white
-    md:bg-cozy-brown-600/70 hover:bg-cozy-brown-500/50 active:bg-cozy-brown-500/70
-    dark:md:bg-cozy-brown-800 dark:hover:bg-cozy-brown-700/50 dark:active:bg-cozy-brown-700/70
-  "
+  class="header-btn mr-2 w-9 h-9 font-icon text-xl text-white"
   on:click={cycleTheme}
 >
   {#if theme === "dark"}
