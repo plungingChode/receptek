@@ -3,10 +3,12 @@ import MainLayout from "~/layouts/Main.astro";
 import RecipeThumbnail from "~/components/RecipeThumbnail.svelte";
 import recipeIndex from "~/data/recipe-index.json";
 import SearchButton from "~/components/SearchButton.svelte";
+import GoToShoppingListButton from "~/components/shopping-list/GoToButton.svelte";
 ---
 
 <MainLayout stickyHeader>
-  <SearchButton client:load slot="actions"/>
+  <GoToShoppingListButton slot="actions" client:load />
+  <SearchButton slot="actions" client:load />
   <main class="p-4">
     <div class="grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,_24rem)] justify-center gap-4 mx-auto">
       {
