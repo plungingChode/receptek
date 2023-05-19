@@ -1,17 +1,19 @@
 ---
+import "~/styles/main.css";
 import { href } from "~/util.js";
 import ThemeToggleButton from "~/components/ThemeToggleButton.svelte";
 
 interface Props {
   title?: string;
+  headerTitle?: string;
   stickyHeader?: boolean;
 }
 
-const { title, stickyHeader } = Astro.props;
+const { title, headerTitle, stickyHeader } = Astro.props;
 ---
 
 <!DOCTYPE html>
-<html lang="hu-HU">
+<html lang="hu-HU" class:list={["min-h-screen overflow-y-scroll", { "scroll-pt-16": stickyHeader }]}>
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -49,7 +51,11 @@ const { title, stickyHeader } = Astro.props;
     </script>
   </head>
   <body
-    class="font-body font-light bg-cozy-beige-300/75 dark:bg-cozy-brown-900 dark:text-cozy-beige-50"
+    class:list={[
+      "min-h-screen",
+      "font-body font-light",
+      "bg-cozy-beige-300/75 dark:bg-cozy-brown-900 dark:text-cozy-beige-50",
+    ]}
   >
     <header
       class:list={[
@@ -57,7 +63,7 @@ const { title, stickyHeader } = Astro.props;
         { "md:sticky": stickyHeader },
       ]}
     >
-      <a href={href("/recept")}>Receptek</a>
+      <a href={href("/recept")}>{headerTitle ?? "Receptek"}</a>
       <div class="flex items-center ml-auto">
         <ThemeToggleButton client:load />
         <slot name="actions" />
