@@ -33,8 +33,11 @@ const { title, stickyHeader } = Astro.props;
     <script is:inline>
       const prefersDark = () => window.matchMedia("(prefers-color-scheme: dark)").matches;
       const theme = (() => {
-        if (typeof localStorage !== "undefined") {
-          return localStorage.getItem("theme");
+        if (localStorage !== undefined) {
+          const theme = localStorage.getItem("theme");
+          if (theme !== null) {
+            return theme;
+          }
         }
         if (prefersDark()) {
           return "dark";
@@ -43,7 +46,7 @@ const { title, stickyHeader } = Astro.props;
       })();
       if (theme === "light") {
         document.documentElement.classList.remove("dark");
-      } else if (prefersDark()) {
+      } else {
         document.documentElement.classList.add("dark");
       }
     </script>
