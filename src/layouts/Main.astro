@@ -48,7 +48,8 @@ const { title, headerTitle, stickyHeader } = Astro.props;
         }
         return "light";
       }
-      if (getTheme() === "light") {
+      const theme = getTheme();
+      if (theme !== "dark") {
         document.documentElement.classList.remove("dark");
       } else {
         document.documentElement.classList.add("dark");
