@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
 import { createEventDispatcher, onDestroy, onMount } from "svelte";
 import { createFocusTrap, type FocusTrap } from "focus-trap";
-import { deaccent, href } from "~/util.js";
+import { deaccent, href } from "~/util";
 import { debounce } from "lodash-es";
 import fuzzysort from "fuzzysort";
 import recipeIndex from "../data/recipe-index.json";

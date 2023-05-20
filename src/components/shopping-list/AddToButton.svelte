@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
-import type { Ingredient } from "~/types.js";
-import { Ingredients, isIngredientList, isIngredientGroups } from "~/ingredients.js";
-import { ShoppingListIngredient, persistentShoppingList } from "./store.js";
+import type { Ingredient } from "~/types";
+import { Ingredients, isIngredientList, isIngredientGroups } from "~/ingredients";
+import { ShoppingListIngredient, persistentShoppingList } from "./store";
 
 function toShoppingListIngredient(i: Ingredient): ShoppingListIngredient {
   return { ...i, marked: false };

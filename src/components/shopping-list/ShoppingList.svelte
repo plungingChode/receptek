@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
-import type { Ingredient, MeasuredIngredient } from "~/types.js";
-import type { ShoppingListEntry } from "./store.js";
-import { persistentShoppingList as shoppingList } from "./store.js";
+import type { Ingredient, MeasuredIngredient } from "~/types";
+import type { ShoppingListEntry } from "./store";
+import { persistentShoppingList as shoppingList } from "./store";
 
 function isMeasuredIngredient(i: Ingredient): i is MeasuredIngredient {
   return "qty" in i;
@@ -9,7 +9,7 @@ function isMeasuredIngredient(i: Ingredient): i is MeasuredIngredient {
 </script>
 
 <script lang="ts">
-import { href } from "~/util.js";
+import { href } from "~/util";
 
 // TODO replace with custom modal
 function deleteWithConfirm(item: ShoppingListEntry): void {

@@ -1,6 +1,6 @@
 <script lang="ts">
-import { persistentShoppingList as shoppingList } from "./store.js";
-import { href } from "~/util.js";
+import { persistentShoppingList as shoppingList } from "./store";
+import { href } from "~/util";
 
 function getCounterBadgeText(itemCount: number): string | undefined {
   if (itemCount === 0) {

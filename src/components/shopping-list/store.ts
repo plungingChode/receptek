@@ -1,8 +1,8 @@
 import "@total-typescript/ts-reset";
-import type { Ingredient } from "~/types.js";
+import type { Ingredient } from "~/types";
 import { writable } from "svelte/store";
 import { z } from "zod";
-import { INDEX_NOT_FOUND, __SERVER__ } from "~/consts.js";
+import { INDEX_NOT_FOUND, __SERVER__ } from "~/consts";
 
 export type ShoppingListIngredient = Ingredient & {
   /** Whether this ingredient is marked as collected/bought. */
