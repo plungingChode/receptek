@@ -1,17 +1,24 @@
 <script lang="ts">
 type Theme = "light" | "dark" | null;
 
-const prefersDark = () => window.matchMedia("(prefers-color-scheme: dark)").matches;
+let theme = getTheme();
 
-let theme = (() => {
+function prefersDark(): boolean {
+  if (typeof window !== "undefined") {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  }
+  return false;
+}
+
+function getTheme(): Theme | null {
   if (typeof localStorage !== "undefined") {
-    return localStorage.getItem("theme") as Theme;
+    return localStorage.getItem("theme") as Theme | null;
   }
   if (prefersDark()) {
     return "dark";
   }
   return "light";
-})();
+}
 
 const setTheme = (newTheme: Theme) => {
   if (newTheme !== null) {
@@ -22,7 +29,7 @@ const setTheme = (newTheme: Theme) => {
 
   if (newTheme === "light") {
     document.documentElement.classList.remove("dark");
-  } else if (theme === "dark" || prefersDark()) {
+  } else if (newTheme === "dark" || prefersDark()) {
     document.documentElement.classList.add("dark");
   }
 

@@ -33,20 +33,22 @@ const { title, headerTitle, stickyHeader } = Astro.props;
     />
 
     <script is:inline>
-      const prefersDark = () => window.matchMedia("(prefers-color-scheme: dark)").matches;
-      const theme = (() => {
-        if (localStorage !== undefined) {
-          const theme = localStorage.getItem("theme");
-          if (theme !== null) {
-            return theme;
-          }
+      function prefersDark() {
+        if (typeof window !== "undefined") {
+          return window.matchMedia("(prefers-color-scheme: dark)").matches;
+        }
+        return false;
+      }
+      function getTheme() {
+        if (typeof localStorage !== "undefined") {
+          return localStorage.getItem("theme");
         }
         if (prefersDark()) {
           return "dark";
         }
         return "light";
-      })();
-      if (theme === "light") {
+      }
+      if (getTheme() === "light") {
         document.documentElement.classList.remove("dark");
       } else {
         document.documentElement.classList.add("dark");
