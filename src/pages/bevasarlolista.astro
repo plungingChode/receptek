@@ -4,5 +4,5 @@ import ShoppingList from "~/components/shopping-list/ShoppingList.svelte";
 ---
 
 <MainLayout stickyHeader title="Bevásárlólista" headerTitle="Bevásárlólista">
-  <ShoppingList client:load />
+  <ShoppingList client:only="svelte" />
 </MainLayout>

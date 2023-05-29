@@ -1,6 +1,6 @@
 import "@total-typescript/ts-reset";
 import type { Ingredient } from "~/types";
-import { writable } from "svelte/store";
+import { Readable, writable } from "svelte/store";
 import { z } from "zod";
 import { INDEX_NOT_FOUND, __SERVER__ } from "~/consts";
 
@@ -9,13 +9,13 @@ export type ShoppingListIngredient = Ingredient & {
   marked: boolean;
 };
 
-export type ShoppingListEntry = {
+export type ShoppingListRecipe = {
   /**
    * A unique ID for a particular recipe (usually the page slug).
    */
   id: string;
   /** The recipe name */
-  recipeName: string;
+  name: string;
   /**
    * The number of times this recipe was added to the shopping list.
    * Essentially equivalent to portions.
@@ -31,9 +31,9 @@ export type ShoppingListEntry = {
 const SHOPPING_LIST_KEY = "shopping_list";
 
 /** Validates a `ShoppingListEntry` object */
-const shoppingListEntrySchema: z.ZodType<ShoppingListEntry> = z.object({
+const shoppingListEntrySchema: z.ZodType<ShoppingListRecipe> = z.object({
   id: z.string(),
-  recipeName: z.string(),
+  name: z.string(),
   count: z.number().int().nonnegative(),
   ingredients: z.array(
     z.object({
@@ -46,50 +46,63 @@ const shoppingListEntrySchema: z.ZodType<ShoppingListEntry> = z.object({
 });
 
 /** Validates a `ShoppingListEntry[]` array */
-const shoppingListSchema: z.ZodType<ShoppingListEntry[]> = z.array(shoppingListEntrySchema);
+const shoppingListSchema: z.ZodType<ShoppingListRecipe[]> = z.array(shoppingListEntrySchema);
+
+export type PersistentShoppingList = {
+  subscribe: Readable<ShoppingListRecipe[]>["subscribe"];
+  add: (newEntry: ShoppingListRecipe) => void;
+  remove: (recipeId: string) => void;
+  setMarked: (recipeId: string, ingredientName: string, isMarked: boolean) => void;
+  setAllMarked: (ingredients: [string, string][], isMarked: boolean) => void;
+};
 
 /**
  * A shopping list loaded from and saved to persistent storage.
  */
-export const persistentShoppingList = (() => {
+export const persistentShoppingList: PersistentShoppingList = (() => {
   const shoppingList = initialize();
-  const w = writable<ShoppingListEntry[]>(shoppingList);
+  const w = writable<ShoppingListRecipe[]>(shoppingList);
+
+  let recipeIndex: Record<string, number> = reindex(shoppingList);
 
   return {
     subscribe: w.subscribe,
     /**
-     * Add a new entry to the shopping list. If one with the same `id` already
+     * Add a new recipe to the shopping list. If one with the same `id` already
      * exists, increment its count instead.
      */
-    add: (newEntry: ShoppingListEntry) =>
+    add: (newEntry: ShoppingListRecipe) =>
       w.update((list) => {
-        const idx = list.findIndex((e) => e.id === newEntry.id);
-        if (idx === INDEX_NOT_FOUND) {
+        const idx = recipeIndex[newEntry.id];
+        if (typeof idx === "undefined") {
           list.push(newEntry);
         } else {
           list[idx]!.count += newEntry.count;
         }
+        recipeIndex = reindex(list);
         save(list);
         return list;
       }),
 
     /**
-     * Remove an entry from the shopping list by its `id`.
+     * Remove a recipe from the shopping list by its `id`.
      */
     remove: (id: string) =>
       w.update((list) => {
-        const idx = list.findIndex((e) => e.id === id);
-        if (idx !== INDEX_NOT_FOUND) {
-          list.splice(idx, 1);
+        const idx = recipeIndex[id];
+        if (typeof idx === "undefined") {
+          return list;
         }
+        list.splice(idx, 1);
+        recipeIndex = reindex(list);
         save(list);
         return list;
       }),
 
     setMarked: (itemId: string, ingredientName: string, isMarked: boolean) =>
       w.update((list) => {
-        const idx = list.findIndex((e) => e.id === itemId);
-        if (idx === INDEX_NOT_FOUND) {
+        const idx = recipeIndex[itemId];
+        if (typeof idx === "undefined") {
           return list;
         }
         const ingredients = list[idx]!.ingredients;
@@ -101,6 +114,24 @@ export const persistentShoppingList = (() => {
         save(list);
         return list;
       }),
+
+    setAllMarked: (ingredients: [string, string][], isMarked: boolean) =>
+      w.update((list) => {
+        for (const [recipeId, ingredientName] of ingredients) {
+          const idx = recipeIndex[recipeId];
+          if (typeof idx === "undefined") {
+            continue;
+          }
+          const recipe = list[idx]!;
+          const ingredient = recipe.ingredients.find((x) => x.name === ingredientName);
+          if (!ingredient) {
+            continue;
+          }
+          ingredient.marked = isMarked;
+        }
+        save(list);
+        return list;
+      }),
   };
 })();
 
@@ -108,7 +139,7 @@ export const persistentShoppingList = (() => {
  * Load the stored shopping list from persistent storage (in this case,
  * `localStorage`).
  */
-function load(): z.SafeParseReturnType<unknown, ShoppingListEntry[]> {
+function load(): z.SafeParseReturnType<unknown, ShoppingListRecipe[]> {
   if (__SERVER__) {
     return { success: true, data: [] };
   }
@@ -119,7 +150,7 @@ function load(): z.SafeParseReturnType<unknown, ShoppingListEntry[]> {
 /**
  * Serialize and write a shopping list to persistent storage.
  */
-function save(l: ShoppingListEntry[]) {
+function save(l: ShoppingListRecipe[]) {
   if (__SERVER__) {
     return;
   }
@@ -133,7 +164,7 @@ function save(l: ShoppingListEntry[]) {
  */
 function initialize() {
   const loadResult = load();
-  let shoppingList: ShoppingListEntry[];
+  let shoppingList: ShoppingListRecipe[];
   if (loadResult.success) {
     shoppingList = loadResult.data;
   } else {
@@ -142,4 +173,12 @@ function initialize() {
     save(shoppingList);
   }
   return shoppingList;
+}
+
+function reindex(list: ShoppingListRecipe[]): Record<string, number> {
+  const index: Record<string, number> = {};
+  for (let i = 0; i < list.length; i++) {
+    index[list[i]!.id] = i;
+  }
+  return index;
 }

@@ -26,7 +26,7 @@ export let slug: string;
 function addCurrent() {
   persistentShoppingList.add({ 
     id: slug,
-    recipeName,
+    name: recipeName,
     ingredients: flattenIngredients(ingredients),
     count: 1 
   });
