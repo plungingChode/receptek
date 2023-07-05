@@ -12,7 +12,10 @@ function prefersDark(): boolean {
 
 function getTheme(): Theme | null {
   if (typeof localStorage !== "undefined") {
-    return localStorage.getItem("theme") as Theme | null;
+    const theme = localStorage.getItem("theme") as Theme | null;
+    if (theme) {
+      return theme;
+    }
   }
   if (prefersDark()) {
     return "dark";

@@ -41,7 +41,10 @@ const { title, headerTitle, stickyHeader } = Astro.props;
       }
       function getTheme() {
         if (typeof localStorage !== "undefined") {
-          return localStorage.getItem("theme");
+          const theme = localStorage.getItem("theme");
+          if (theme) {
+            return theme;
+          }
         }
         if (prefersDark()) {
           return "dark";
