@@ -1,7 +1,7 @@
 <script lang="ts">
 import ShoppingListOverviewItem from "./ShoppingListOverviewItem.svelte";
 import type { PersistentShoppingList } from "./store";
-import { CombinedIngredient, intoOverview } from "./util";
+import { type CombinedIngredient, intoOverview } from "./util";
 
 export let store: PersistentShoppingList;
 

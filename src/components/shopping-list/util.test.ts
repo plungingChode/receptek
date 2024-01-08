@@ -1,6 +1,6 @@
-import type { Ingredient } from "~/types";
+import type { Ingredient } from "../../types";
 import { describe, test, expect } from "vitest";
-import { intoOverview, ReconciledMeasurement, reconcileUnits } from "./util";
+import { intoOverview, type ReconciledMeasurement, reconcileUnits } from "./util";
 import type { ShoppingListRecipe } from "./store";
 
 describe("unit reconciliation", () => {

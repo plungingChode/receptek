@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 import type { ShoppingListRecipe, ShoppingListIngredient } from "./store";
-import { CombinedIngredient, IngredientWithSource, isMeasuredIngredient } from "./util";
+import { type CombinedIngredient, type IngredientWithSource, isMeasuredIngredient } from "./util";
 </script>
 
 <script lang="ts">

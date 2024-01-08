@@ -96,8 +96,10 @@ const sortDebounced = debounce(sortIndex, 250, {
 $: sortDebounced(search, preparedIndex);
 
 onMount(() => {
-  focusTrap = createFocusTrap(container);
-  focusTrap.activate();
+  setTimeout(() => {
+    focusTrap = createFocusTrap(container);
+    focusTrap.activate();
+  });
   originalOverflow = documentOverflow.get();
   documentOverflow.set("hidden hidden");
   window.addEventListener("popstate", close);

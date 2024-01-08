@@ -1,6 +1,6 @@
 import "@total-typescript/ts-reset";
 import type { Ingredient } from "~/types";
-import { Readable, writable } from "svelte/store";
+import { type Readable, writable } from "svelte/store";
 import { z } from "zod";
 import { INDEX_NOT_FOUND, __SERVER__ } from "~/consts";
 

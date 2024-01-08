@@ -10,7 +10,6 @@ export default defineConfig({
     port: 3000,
   },
   markdown: {
-    drafts: true,
     syntaxHighlight: false
   },
   integrations: [svelte(), tailwind()],
