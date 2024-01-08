@@ -1,0 +1,8 @@
+---
+import MainLayout from "~/layouts/Main.astro";
+import ShoppingList from "~/components/shopping-list/ShoppingList.svelte";
+---
+
+<MainLayout stickyHeader title="Bevásárlólista" headerTitle="Bevásárlólista">
+  <ShoppingList client:only="svelte" />
+</MainLayout>

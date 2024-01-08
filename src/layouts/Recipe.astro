@@ -4,11 +4,15 @@ import {
   isIngredientList,
   isIngredientGroups,
   Ingredients,
-} from "../ingredients.js";
+} from "../ingredients";
 import MainLayout from "./Main.astro";
 import IngredientList from "~/components/IngredientList.astro";
 import IngredientGroups from "~/components/IngredientGroups.astro";
 import SearchButton from "~/components/SearchButton.svelte";
+import AddToShoppingListButton from "~/components/shopping-list/AddToButton.svelte";
+import GoToShoppingListButton from "~/components/shopping-list/GoToButton.svelte";
+
+const slug = Astro.url.pathname.split('/').at(-1);
 
 type UncheckedFrontmatter = {
   title?: string;
@@ -52,6 +56,7 @@ function validateFrontmatter(fm: UncheckedFrontmatter): Frontmatter {
 ---
 
 <MainLayout title={fm.title}>
+  <GoToShoppingListButton slot="actions" client:load />
   <SearchButton slot="actions" client:load />
   <article
     class="relative lg:grid lg:grid-cols-[0.75fr_1.25fr_0.5fr] xl:grid-cols-[0.75fr_1fr_0.75fr] gap-2 p-2"
@@ -64,10 +69,16 @@ function validateFrontmatter(fm: UncheckedFrontmatter): Frontmatter {
     <section
       class="flex flex-col justify-self-end col-start-1 p-2 lg:pl-6 lg:sticky top-14 max-w-xl mx-auto lg:w-96 lg:max-h-[calc(100vh_-_64px)] lg:mr-0 overflow-hidden"
     >
-      <h3 class="text-lg font-bold">Hozzávalók</h3>
+      <h3 class="text-lg font-bold flex items-center gap-2">Hozzávalók </h3>
       <div class="flex-shrink overflow-auto">
         {isIngredientList(fm.ingredients) && <IngredientList ingredients={fm.ingredients.list} />}
         {isIngredientGroups(fm.ingredients) && <IngredientGroups groups={fm.ingredients.groups} />}
+        <AddToShoppingListButton 
+          client:load
+          recipeName={fm.title}
+          ingredients={fm.ingredients}
+          slug={slug}
+        />
       </div>
     </section>
     <section class="col-start-2 w-full mx-auto max-w-xl p-2">

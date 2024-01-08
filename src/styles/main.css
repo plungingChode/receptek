@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn,
+.header-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: theme("borderRadius.lg");
+}
+
+/* Buttons always have a background */
+.btn {
+  background-color: theme("colors.cozy-brown.600/0.7");
+}
+.dark .btn {
+  background-color: theme("colors.cozy-brown.800");
+}
+
+.btn:hover,
+.header-btn:hover {
+  background-color: theme("colors.cozy-brown.500/0.5");
+}
+.btn:active,
+.header-btn:active {
+  background-color: theme("colors.cozy-brown.500/0.7");
+}
+
+.dark .btn:hover,
+.dark .header-btn:hover {
+  background-color: theme("colors.cozy-brown.700/0.5");
+}
+.dark .btn:active,
+.dark .header-btn:active {
+  background-color: theme("colors.cozy-brown.700/0.7");
+}
+
+/* Header buttons only get a background on larger screens */
+@media screen and (min-width: theme("screens.md")) {
+  .header-btn {
+    background-color: theme("colors.cozy-brown.600/0.7");
+  }
+  
+  .dark .header-btn {
+    background-color: theme("colors.cozy-brown.800");
+  }
+}
+
+
+
+

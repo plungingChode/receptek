@@ -1,5 +1,5 @@
 <script lang="ts">
-import { href } from "~/util.js";
+import { href } from "~/util";
 
 export let title: string;
 export let author: string | undefined = undefined;

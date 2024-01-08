@@ -1,4 +1,4 @@
-import type { Ingredient, IngredientGroup } from "./types.js";
+import type { Ingredient, IngredientGroup } from "./types";
 
 export type Ingredients = { list: Ingredient[] } | { groups: IngredientGroup[] };
 

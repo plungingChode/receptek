@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
 import { createEventDispatcher, onDestroy, onMount } from "svelte";
 import { createFocusTrap, type FocusTrap } from "focus-trap";
-import { deaccent, href } from "~/util.js";
+import { deaccent, href } from "~/util";
 import { debounce } from "lodash-es";
 import fuzzysort from "fuzzysort";
 import recipeIndex from "../data/recipe-index.json";
@@ -11,9 +11,10 @@ type PreparedRecipeIndex = typeof recipeIndex[number] & {
   prepared_title: Fuzzysort.Prepared;
 };
 
+// FIXME this is just wrong!
 const EMPTY_RESULT_SET: Fuzzysort.KeysResults<PreparedRecipeIndex> = Object.assign([], {
   total: 0,
-});
+}) as any;
 
 const preparedIndex: PreparedRecipeIndex[] = recipeIndex.map((i) => ({
   ...i,
@@ -38,6 +39,7 @@ let focusTrap: FocusTrap | null = null;
 let originalOverflow: string = "auto auto";
 let search: string = "";
 let searchResult = EMPTY_RESULT_SET;
+let inputDirty = false;
 
 const dispatch = createEventDispatcher<{
   close: void;
@@ -60,6 +62,9 @@ const closeOnEscape = (e: KeyboardEvent) => {
 };
 
 const onInputKeydown = (e: KeyboardEvent) => {
+  if (!inputDirty) {
+    inputDirty = true;
+  }
   if (e.key === "Enter") {
     sortDebounced.flush();
     e.preventDefault();
@@ -147,9 +152,9 @@ onDestroy(() => {
       </form>
     </header>
     <div class="results flex flex-col gap-2 py-4 px-5 overflow-y-auto">
-      {#if searchResult.length === 0}
+      {#if searchResult.length === 0 && inputDirty}
         <p class="py-8 px-2 mx-auto">Nincs találat</p>
-      {:else}
+      {:else if searchResult.length > 0}
         {#each searchResult as result, i (result.obj.slug)}
           <a
             href={href(result.obj.slug)}

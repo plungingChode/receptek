@@ -3,14 +3,15 @@
   "extends": "astro/tsconfigs/strictest",
   "compilerOptions": {
     "module": "ESNext",
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "node",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     
     "outDir": "./build",
     "baseUrl": ".",
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": ["src/*"],
+      "~": ["src"]
     }
   },
   "exclude": [

@@ -1,78 +1,125 @@
 import "dotenv/config";
 
-import fm from "front-matter";
-import fs from "fs";
-import path from "path";
-
-// WTF is this module resolution? (on Windows, Node 18)
+import fs from "node:fs";
+import path from "node:path";
+import readline from "node:readline";
 import { isIngredientList, parseIngredients } from "../src/ingredients.js";
 import type { Ingredient } from "../src/types.js";
 import { deaccent } from "../src/util.js";
+import { parse } from "yaml";
 
+// TODO read these constants from env
 const RECIPE_INDEX = "/recept";
 const INDEX_FILENAME = "recipe-index.json";
 
-const cwd = process.cwd();
-const recipesDir = path.resolve(cwd, "src/pages/recept");
+main();
 
-if (!fs.existsSync(recipesDir)) {
-  throw new Error(`recipes not found (tried: ${recipesDir})`);
-}
+/**
+ * Generate a searchable index from recipe frontmatter and write it as
+ * a JSON file to `src/data/INDEX_FILENAME`.
+ *
+ * This file should **not be** committed, but instead regenerated during
+ * deployment.
+ */
+async function main() {
+  const cwd = process.cwd();
+  const recipesDir = path.resolve(cwd, "src/pages/recept");
 
-const recipePaths = fs
-  .readdirSync(recipesDir)
-  .filter((f) => path.extname(f) === ".md")
-  .map((p) => path.resolve(recipesDir, p));
+  if (!fs.existsSync(recipesDir)) {
+    throw new Error(`recipes not found (tried: ${recipesDir})`);
+  }
 
-const outDir = path.resolve(cwd, "src/data");
-const outFile = path.resolve(outDir, INDEX_FILENAME);
+  const recipePaths = fs
+    .readdirSync(recipesDir)
+    .filter((f) => path.extname(f) === ".md")
+    .map((p) => path.resolve(recipesDir, p));
 
-let haveErrors = false;
-const indexedRecipes: IndexedRecipe[] = [];
-for (const p of recipePaths) {
-  try {
-    indexedRecipes.push(indexRecipe(p));
-  } catch (e: unknown) {
-    haveErrors = true;
-    console.log(`Error in '${p}'`);
-    if (e instanceof Error) {
-      console.error(e.message);
-    } else {
-      console.error(e);
+  const outDir = path.resolve(cwd, "src/data");
+  const outFile = path.resolve(outDir, INDEX_FILENAME);
+
+  let haveErrors = false;
+  const indexedRecipes: IndexedRecipe[] = [];
+  for (const p of recipePaths) {
+    try {
+      const fm = await readFrontmatter(p);
+      const indexed = indexRecipe(p, fm as string);
+      indexedRecipes.push(indexed);
+    } catch (e: unknown) {
+      haveErrors = true;
+      console.log(`Error in '${p}'`);
+      if (e instanceof Error) {
+        console.error(e.message);
+      } else {
+        console.error(e);
+      }
     }
   }
+  if (haveErrors) {
+    process.exit(1);
+  }
+  const index = JSON.stringify(indexedRecipes);
+  fs.mkdirSync(outDir, { recursive: true });
+  fs.writeFileSync(outFile, index, { encoding: "utf-8", flag: "w" });
 }
-if (haveErrors) {
-  process.exit(1);
-}
-const index = JSON.stringify(indexedRecipes, null, 2);
-fs.mkdirSync(outDir, { recursive: true });
-fs.writeFileSync(outFile, index, { encoding: "utf-8", flag: "w" });
 
+/**
+ * Searchable properties of a recipe extracted from its frontmatter
+ * and file metadata.
+ */
 type IndexedRecipe = {
+  /** The file name without extension */
   slug: string;
+  /** The recipe title */
   title: string;
+  /**
+   * The recipe title in a fuzzy search-friendly format (without accents,
+   * all lowercase).
+   */
   title_search: string;
+  /** The recipe author */
   author: string | undefined;
+  /** The concatenated ingredient list, without units */
   ingredients: string;
+  /**
+   * The ingredient list in a fuzzy search-friendly format (no accents,
+   * all lowercase).
+   */
   ingredients_search: string;
 };
 
-function indexRecipe(file: string): IndexedRecipe {
-  const content = fs.readFileSync(file, "utf-8");
+function readFrontmatter(file: string): Promise<string> {
+  const frontmatter: string[] = [];
+  const stream = fs.createReadStream(file, "utf-8");
+  const reader = readline.createInterface({ input: stream });
 
-  // Typescript doesn't understand that this thing is a function (even though it did before)
-  const parse = fm as any;
-  const parsed: { attributes: unknown } = parse(content);
-  const { attributes } = parsed;
+  let nDelimiters = 0;
+  return new Promise((resolve) => {
+    reader.on("line", (ln) => {
+      if (ln === "---") {
+        nDelimiters += 1;
+        return;
+      }
+      if (nDelimiters === 2) {
+        resolve(frontmatter.join("\n"));
+        reader.close();
+        return;
+      }
+      frontmatter.push(ln);
+    });
+  });
+}
 
-  if (!isRecipeFrontmatter(attributes)) {
-    console.log(attributes);
+function indexRecipe(fileName: string, frontmatter: string): IndexedRecipe {
+  // FIXME use YAML array for ingredients instead of a multiline string
+  const fm: unknown = parse(frontmatter);
+
+  if (!isRecipeFrontmatter(fm)) {
+    console.log(fm);
     throw new Error("doesn't contain a valid recipe frontmatter");
   }
 
-  const ingredients = parseIngredients(attributes.ingredients);
-  const { title, author } = attributes;
+  const ingredients = parseIngredients(fm.ingredients);
+  const { title, author } = fm;
 
   let ingredientList: Ingredient[];
   if (isIngredientList(ingredients)) {
@@ -85,7 +132,7 @@ function indexRecipe(file: string): IndexedRecipe {
   const ingredientsStr = ingredientList.map((i) => i.name).join(", ");
   const ingredientsSearch = deaccent(ingredientsStr);
   const titleSearch = deaccent(title.toLowerCase());
-  const slug = RECIPE_INDEX + "/" + path.basename(file, ".md");
+  const slug = RECIPE_INDEX + "/" + path.basename(fileName, ".md");
 
   return {
     ingredients: ingredientsStr,
