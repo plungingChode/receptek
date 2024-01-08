@@ -9,8 +9,8 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "build:index": "ts-node --esm ./scripts/index-recipes.ts",
-    "create:recipe": "ts-node --esm ./scripts/new-recipe.ts"
+    "build:index": "node ./scripts/index-recipes.js",
+    "new:recipe": "node ./scripts/new-recipe.js"
   },
   "keywords": [],
   "author": "",

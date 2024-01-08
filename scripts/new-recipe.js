@@ -7,9 +7,9 @@ const TEMPLATE_FILE = "recipe-template.md";
 const RECIPES_DIR = "src/pages/recept";
 
 const usage = `
-Usage: pnpm create:recipe <name> [source]
-       pnpm create:recipe --help
-       pnpm create:recipe
+Usage: npm run new:recipe <name> [source]
+       npm run new:recipe --help
+       npm run new:recipe
 
 Generate a new recipe from the common template. Omitting the required parameters
 will prompt the user for them instead.
@@ -39,7 +39,7 @@ async function main() {
     args[1] = params.source;
   }
 
-  const name = args[0] as string;
+  const name = /** @type {string} */ args[0];
   const source = `# forrás: ${args[1] || ""}`;
 
   if (!name) {
@@ -61,8 +61,10 @@ async function main() {
 
 /**
  * Converts a string to a URL slug-friendly format
+ * @param {string} name
+ * @returns {string}
  */
-function slugify(name: string): string {
+function slugify(name) {
   return name
     .normalize("NFD")
     .toLowerCase()
@@ -73,8 +75,11 @@ function slugify(name: string): string {
 
 /**
  * Returns the filenames of existing recipes in the `RECIPES_DIR`
+ *
+ * @param {string} cwd
+ * @returns {string[]}
  */
-function existingRecipes(cwd: string) {
+function existingRecipes(cwd) {
   return fs
     .readdirSync(path.join(cwd, RECIPES_DIR))
     .filter((fname) => path.extname(fname) === ".md")
@@ -84,8 +89,12 @@ function existingRecipes(cwd: string) {
 /**
  * Generates a filename from a recipe slug. If there's already a file with
  * the same name, appends an incrementing number at the end.
+ *
+ * @param {string[]} existingRecipes
+ * @param {string} s
+ * @returns {string}
  */
-function toFileName(existingRecipes: string[], s: string): string {
+function toFileName(existingRecipes, s) {
   const originalSlug = slugify(s);
   let slug = originalSlug;
   let nCopies = 0;
@@ -98,8 +107,10 @@ function toFileName(existingRecipes: string[], s: string): string {
 
 /**
  * Prompt the user for inputs required to create a new recipe.
+  *
+  * @returns {Promise<{ name: string, source: string }>}
  */
-async function getParameters(): Promise<{ name: string; source: string }> {
+async function getParameters() {
   console.log("Enter recipe details. Fields marked with '*' are required.");
   const name = readline.question("[*] Recipe name: ");
   const source = readline.question("[ ] Recipe source: ");

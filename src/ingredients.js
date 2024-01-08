@@ -1,8 +1,17 @@
-import type { Ingredient, IngredientGroup } from "./types";
+/**
+ * @typedef {import("./types").Ingredient} Ingredient
+ * @typedef {import("./types").IngredientGroup} IngredientGroup
+ *
+ * @typedef {{ list: Ingredient[] }} IngredientList
+ * @typedef {{ groups: IngredientGroup[] }} IngredientGroups
+ * @typedef {IngredientList | IngredientGroups} Ingredients
+ */
 
-export type Ingredients = { list: Ingredient[] } | { groups: IngredientGroup[] };
-
-export function parseIngredients(ingredients: string): Ingredients {
+/**
+ * @param {string} ingredients
+ * @returns {Ingredients}
+ */
+export function parseIngredients(ingredients) {
   const lines = ingredients.split("\n").filter((l) => l.length > 0);
   const hasGroups = lines.some((line) => line.startsWith("#"));
 
@@ -10,8 +19,10 @@ export function parseIngredients(ingredients: string): Ingredients {
     return { list: lines.map(parseIngredient) };
   }
 
-  const groups: IngredientGroup[] = [];
-  let currentGroup: IngredientGroup = { name: "", ingredients: [] };
+  /** @type {IngredientGroup[]} */
+  const groups = [];
+  /** @type {IngredientGroup} */
+  let currentGroup = { name: "", ingredients: [] };
   for (const line of lines) {
     if (isGroupName(line)) {
       if (currentGroup.name) {
@@ -29,13 +40,18 @@ export function parseIngredients(ingredients: string): Ingredients {
   return { groups };
 }
 
-export function parseIngredient(line: string): Ingredient {
-  const error = (reason: string) => {
+/**
+ * @param {string} line
+ * @returns {Ingredient}
+ */
+export function parseIngredient(line) {
+  /** @param {string} reason */
+  const error = (reason) => {
     throw new Error(
       [
         `failed to parse "${line}" as ingredient, reason: ${reason}\n`,
         'ingredients must be formatted as "{name}" or "{name} -- {quantity} {unit}"',
-        'and match the regex /(\\w+) -- (\\d+(\\.\\d+)) (\\w+)/',
+        "and match the regex /(\\w+) -- (\\d+(\\.\\d+)) (\\w+)/",
       ].join(" ")
     );
   };
@@ -45,7 +61,7 @@ export function parseIngredient(line: string): Ingredient {
     if (!name) {
       return error("invalid name");
     }
-    return { name }
+    return { name };
   }
 
   const [qtyStr, ...unitParts] = (rest ?? "").split(" ");
@@ -63,7 +79,11 @@ export function parseIngredient(line: string): Ingredient {
   }
 }
 
-function parseGroupName(line: string): string {
+/**
+ * @param {string} line
+ * @returns {string}
+ */
+function parseGroupName(line) {
   const name = line.slice(2).trim();
   if (!name) {
     throw new Error("ingredient group name cannot be empty");
@@ -71,14 +91,27 @@ function parseGroupName(line: string): string {
   return name;
 }
 
-function isGroupName(line: string): boolean {
+/**
+ * @param {string} line
+ * @returns {boolean}
+ */
+function isGroupName(line) {
   return line.startsWith("#");
 }
 
-export function isIngredientList(o: unknown): o is { list: Ingredient[] } {
+/**
+ * @param {unknown} o
+ * @returns {o is IngredientList}
+ */
+export function isIngredientList(o) {
   return typeof o === "object" && o !== null && "list" in o && Array.isArray(o.list);
 }
 
-export function isIngredientGroups(o: unknown): o is { groups: IngredientGroup[] } {
+/**
+ * @param {unknown} o
+ * @returns {o is IngredientGroups}
+ */
+export function isIngredientGroups(o) {
   return typeof o === "object" && o !== null && "groups" in o && Array.isArray(o.groups);
 }
+

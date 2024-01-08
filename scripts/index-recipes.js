@@ -3,14 +3,19 @@ import "dotenv/config";
 import fs from "node:fs";
 import path from "node:path";
 import readline from "node:readline";
+
 import { isIngredientList, parseIngredients } from "../src/ingredients.js";
-import type { Ingredient } from "../src/types.js";
-import { deaccent } from "../src/util.js";
+import { deaccent, isUndefined } from "../src/util.js";
 import { parse } from "yaml";
 
 // TODO read these constants from env
 const RECIPE_INDEX = "/recept";
 const INDEX_FILENAME = "recipe-index.json";
+
+/**
+ * @typedef {import("./types").IndexedRecipe} IndexedRecipe
+ * @typedef {import("./types").RecipeFrontmatter} RecipeFrontmatter
+ */
 
 main();
 
@@ -38,13 +43,14 @@ async function main() {
   const outFile = path.resolve(outDir, INDEX_FILENAME);
 
   let haveErrors = false;
-  const indexedRecipes: IndexedRecipe[] = [];
+  /** @type {IndexedRecipe[]} */
+  const indexedRecipes = [];
   for (const p of recipePaths) {
     try {
       const fm = await readFrontmatter(p);
-      const indexed = indexRecipe(p, fm as string);
+      const indexed = indexRecipe(p, fm);
       indexedRecipes.push(indexed);
-    } catch (e: unknown) {
+    } catch (e) {
       haveErrors = true;
       console.log(`Error in '${p}'`);
       if (e instanceof Error) {
@@ -63,32 +69,12 @@ async function main() {
 }
 
 /**
- * Searchable properties of a recipe extracted from its frontmatter
- * and file metadata.
+ * @param {string} file
+ * @return {Promise<string>}
  */
-type IndexedRecipe = {
-  /** The file name without extension */
-  slug: string;
-  /** The recipe title */
-  title: string;
-  /**
-   * The recipe title in a fuzzy search-friendly format (without accents,
-   * all lowercase).
-   */
-  title_search: string;
-  /** The recipe author */
-  author: string | undefined;
-  /** The concatenated ingredient list, without units */
-  ingredients: string;
-  /**
-   * The ingredient list in a fuzzy search-friendly format (no accents,
-   * all lowercase).
-   */
-  ingredients_search: string;
-};
-
-function readFrontmatter(file: string): Promise<string> {
-  const frontmatter: string[] = [];
+function readFrontmatter(file) {
+  /** @type {string[]} */
+  const frontmatter = [];
   const stream = fs.createReadStream(file, "utf-8");
   const reader = readline.createInterface({ input: stream });
 
@@ -109,9 +95,14 @@ function readFrontmatter(file: string): Promise<string> {
   });
 }
 
-function indexRecipe(fileName: string, frontmatter: string): IndexedRecipe {
+/**
+ * @param {string} fileName
+ * @param {string} frontmatter
+ * @returns {IndexedRecipe}
+ */
+function indexRecipe(fileName, frontmatter) {
   // FIXME use YAML array for ingredients instead of a multiline string
-  const fm: unknown = parse(frontmatter);
+  const fm = parse(frontmatter);
 
   if (!isRecipeFrontmatter(fm)) {
     console.log(fm);
@@ -121,7 +112,8 @@ function indexRecipe(fileName: string, frontmatter: string): IndexedRecipe {
   const ingredients = parseIngredients(fm.ingredients);
   const { title, author } = fm;
 
-  let ingredientList: Ingredient[];
+  /** @type {import("../src/types").Ingredient[]} */
+  let ingredientList;
   if (isIngredientList(ingredients)) {
     ingredientList = ingredients.list;
   } else {
@@ -144,13 +136,11 @@ function indexRecipe(fileName: string, frontmatter: string): IndexedRecipe {
   };
 }
 
-type RecipeFrontmatter = {
-  title: string;
-  author?: string;
-  ingredients: string;
-};
-
-function isRecipeFrontmatter(fm: unknown): fm is RecipeFrontmatter {
+/**
+ * @param {unknown} fm
+ * @returns {fm is RecipeFrontmatter}
+ */
+function isRecipeFrontmatter(fm) {
   return (
     typeof fm === "object" &&
     fm !== null &&
@@ -162,7 +152,12 @@ function isRecipeFrontmatter(fm: unknown): fm is RecipeFrontmatter {
   );
 }
 
-function env(name: string, defaultValue?: string): string {
+/**
+ * @param {string} name
+ * @param {string | undefined} defaultValue
+ * @returns {string}
+ */
+function env(name, defaultValue = undefined) {
   const envvars = process.env;
   if (!(name in envvars)) {
     if (!defaultValue) {
@@ -170,10 +165,19 @@ function env(name: string, defaultValue?: string): string {
     }
     return defaultValue;
   }
-  return envvars[name] as string;
+  const value = envvars[name];
+  if (isUndefined(value)) {
+      throw new Error(`"${name}" is a required environment variable`);
+  }
+  return value;
 }
 
-function compareIndexedRecipes(a: IndexedRecipe, b: IndexedRecipe): number {
+/**
+ * @param {IndexedRecipe} a
+ * @param {IndexedRecipe} b
+ * @returns {number}
+ */
+function compareIndexedRecipes(a, b) {
   if (a.title < b.title) {
     return -1;
   } else if (a.title === b.title) {
