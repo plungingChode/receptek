@@ -1,6 +1,5 @@
 import "@total-typescript/ts-reset";
 import type { Ingredient } from "~/types";
-import { type Readable, writable } from "svelte/store";
 import { z } from "zod";
 import { INDEX_NOT_FOUND, __SERVER__ } from "~/consts";
 
@@ -41,7 +40,7 @@ const shoppingListEntrySchema: z.ZodType<ShoppingListRecipe> = z.object({
       qty: z.number().optional(),
       unit: z.string().optional(),
       marked: z.boolean(),
-    })
+    }),
   ),
 });
 
@@ -49,7 +48,7 @@ const shoppingListEntrySchema: z.ZodType<ShoppingListRecipe> = z.object({
 const shoppingListSchema: z.ZodType<ShoppingListRecipe[]> = z.array(shoppingListEntrySchema);
 
 export type PersistentShoppingList = {
-  subscribe: Readable<ShoppingListRecipe[]>["subscribe"];
+  recipes: ShoppingListRecipe[];
   add: (newEntry: ShoppingListRecipe) => void;
   remove: (recipeId: string) => void;
   setMarked: (recipeId: string, ingredientName: string, isMarked: boolean) => void;
@@ -61,77 +60,75 @@ export type PersistentShoppingList = {
  */
 export const persistentShoppingList: PersistentShoppingList = (() => {
   const shoppingList = initialize();
-  const w = writable<ShoppingListRecipe[]>(shoppingList);
-
+  let recipes = $state(shoppingList);
   let recipeIndex: Record<string, number> = reindex(shoppingList);
 
   return {
-    subscribe: w.subscribe,
+    get recipes() {
+      return recipes;
+    },
+
     /**
      * Add a new recipe to the shopping list. If one with the same `id` already
      * exists, increment its count instead.
      */
-    add: (newEntry: ShoppingListRecipe) =>
-      w.update((list) => {
-        const idx = recipeIndex[newEntry.id];
-        if (typeof idx === "undefined") {
-          list.push(newEntry);
-        } else {
-          list[idx]!.count += newEntry.count;
-        }
-        recipeIndex = reindex(list);
-        save(list);
-        return list;
-      }),
+    add: (newEntry: ShoppingListRecipe) => {
+      const idx = recipeIndex[newEntry.id];
+      if (typeof idx === "undefined") {
+        recipes.push(newEntry);
+      } else {
+        recipes[idx]!.count += newEntry.count;
+      }
+      recipeIndex = reindex(recipes);
+      save(recipes);
+      return recipes;
+    },
 
     /**
      * Remove a recipe from the shopping list by its `id`.
      */
-    remove: (id: string) =>
-      w.update((list) => {
-        const idx = recipeIndex[id];
-        if (typeof idx === "undefined") {
-          return list;
-        }
-        list.splice(idx, 1);
-        recipeIndex = reindex(list);
-        save(list);
-        return list;
-      }),
+    remove: (id: string) => {
+      const idx = recipeIndex[id];
+      if (typeof idx === "undefined") {
+        return recipes;
+      }
+      recipes.splice(idx, 1);
+      recipeIndex = reindex(recipes);
+      save(recipes);
+      return recipes;
+    },
 
-    setMarked: (itemId: string, ingredientName: string, isMarked: boolean) =>
-      w.update((list) => {
-        const idx = recipeIndex[itemId];
+    setMarked: (itemId: string, ingredientName: string, isMarked: boolean) => {
+      const idx = recipeIndex[itemId];
+      if (typeof idx === "undefined") {
+        return recipes;
+      }
+      const ingredients = recipes[idx]!.ingredients;
+      const ingredient = ingredients.find((x) => x.name === ingredientName);
+      if (!ingredient) {
+        return recipes;
+      }
+      ingredient.marked = isMarked;
+      save(recipes);
+      return recipes;
+    },
+
+    setAllMarked: (ingredients: [string, string][], isMarked: boolean) => {
+      for (const [recipeId, ingredientName] of ingredients) {
+        const idx = recipeIndex[recipeId];
         if (typeof idx === "undefined") {
-          return list;
+          continue;
         }
-        const ingredients = list[idx]!.ingredients;
-        const ingredient = ingredients.find((x) => x.name === ingredientName);
+        const recipe = recipes[idx]!;
+        const ingredient = recipe.ingredients.find((x) => x.name === ingredientName);
         if (!ingredient) {
-          return list;
+          continue;
         }
         ingredient.marked = isMarked;
-        save(list);
-        return list;
-      }),
-
-    setAllMarked: (ingredients: [string, string][], isMarked: boolean) =>
-      w.update((list) => {
-        for (const [recipeId, ingredientName] of ingredients) {
-          const idx = recipeIndex[recipeId];
-          if (typeof idx === "undefined") {
-            continue;
-          }
-          const recipe = list[idx]!;
-          const ingredient = recipe.ingredients.find((x) => x.name === ingredientName);
-          if (!ingredient) {
-            continue;
-          }
-          ingredient.marked = isMarked;
-        }
-        save(list);
-        return list;
-      }),
+      }
+      save(recipes);
+      return recipes;
+    },
   };
 })();
 

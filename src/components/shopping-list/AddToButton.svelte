@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
 import type { Ingredient } from "~/types";
-import { Ingredients, isIngredientList, isIngredientGroups } from "~/ingredients";
-import { ShoppingListIngredient, persistentShoppingList } from "./store";
+import { type Ingredients, isIngredientList, isIngredientGroups } from "~/ingredients";
+import { type ShoppingListIngredient, persistentShoppingList } from "./store.svelte";
 
 function toShoppingListIngredient(i: Ingredient): ShoppingListIngredient {
   return { ...i, marked: false };
@@ -17,25 +17,27 @@ function flattenIngredients(i: Ingredients): ShoppingListIngredient[] {
   }
 }
 </script>
-  
+
 <script lang="ts">
-export let recipeName: string;
-export let ingredients: Ingredients;
-export let slug: string;
+let { recipeName, ingredients, slug } = $props<{
+  recipeName: string;
+  ingredients: Ingredients;
+  slug: string;
+}>();
 
 function addCurrent() {
-  persistentShoppingList.add({ 
+  persistentShoppingList.add({
     id: slug,
     name: recipeName,
     ingredients: flattenIngredients(ingredients),
-    count: 1 
+    count: 1,
   });
 }
 </script>
-  
-<button 
+
+<button
   class="
-    btn mt-2 h-9 px-2 text-white text-base font-normal 
+    btn mt-2 h-9 px-2 text-white text-base font-normal
     dark:hover:bg-cozy-brown-700/80
   "
   title="Hozzávalók hozzáadása a bevásárlólistára"

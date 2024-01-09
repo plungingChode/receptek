@@ -1,5 +1,5 @@
 <script lang="ts">
-import { persistentShoppingList as shoppingList } from "./store";
+import { persistentShoppingList as shoppingList } from "./store.svelte";
 import { href } from "~/util";
 
 function getCounterBadgeText(itemCount: number): string | undefined {
@@ -12,8 +12,7 @@ function getCounterBadgeText(itemCount: number): string | undefined {
   }
 }
 
-$: counterBadgeText = getCounterBadgeText($shoppingList.length);
-
+const counterBadgeText = $derived(getCounterBadgeText(shoppingList.recipes.length));
 </script>
 
 <a
@@ -22,9 +21,13 @@ $: counterBadgeText = getCounterBadgeText($shoppingList.length);
 >
   <span title="Bevásárlólista nézet" class="font-icon text-xl">shopping_cart</span>
   {#if counterBadgeText}
-    <div class="
-      text-sm text-center absolute -top-1 -right-1 w-4 h-4 rounded-full
-      bg-cozy-red-800 dark:bg-cozy-red-500 leading-4
-    ">{counterBadgeText}</div>
+    <div
+      class="
+        text-sm text-center absolute -top-1 -right-1 w-4 h-4 rounded-full
+        bg-cozy-red-800 dark:bg-cozy-red-500 leading-4
+      "
+    >
+      {counterBadgeText}
+    </div>
   {/if}
 </a>

@@ -1,18 +1,25 @@
 <script lang="ts">
 import { href } from "~/util";
 
-export let title: string;
-export let author: string | undefined = undefined;
-export let slug: string;
-export let ingredients: string;
+const {
+  title,
+  author = undefined,
+  slug,
+  ingredients,
+} = $props<{
+  title: string;
+  author?: string | undefined;
+  slug: string;
+  ingredients: string;
+}>();
 </script>
 
 <a
   class="
-    h-52 py-3 border border-cozy-red-500/20 
-    bg-cozy-beige-200 hover:bg-cozy-beige-100 focus-visible:bg-cozy-beige-100 
-    text-cozy-beige-200 hover:text-cozy-beige-100 focus-visible:text-cozy-beige-100 shadow-md  
-    shadow-cozy-brown-700/20 cursor-pointer 
+    h-52 py-3 border border-cozy-red-500/20
+    bg-cozy-beige-200 hover:bg-cozy-beige-100 focus-visible:bg-cozy-beige-100
+    text-cozy-beige-200 hover:text-cozy-beige-100 focus-visible:text-cozy-beige-100 shadow-md
+    shadow-cozy-brown-700/20 cursor-pointer
     dark:border-cozy-red-800/20
     dark:bg-cozy-beige-900 dark:hover:bg-cozy-beige-800 dark:shadow-black
   "
@@ -20,10 +27,10 @@ export let ingredients: string;
 >
   <h3
     class="
-      ribbon relative flex w-10/12 p-1 pl-3 -ml-2 
+      ribbon relative flex w-10/12 p-1 pl-3 -ml-2
       text-lg text-inherit font-bold
-      bg-cozy-red-500 rounded-r-lg rounded-t-lg 
-      shadow-sm shadow-cozy-red-500/75 
+      bg-cozy-red-500 rounded-r-lg rounded-t-lg
+      shadow-sm shadow-cozy-red-500/75
       dark:bg-cozy-red-700 dark:shadow-cozy-red-900/75
     "
   >

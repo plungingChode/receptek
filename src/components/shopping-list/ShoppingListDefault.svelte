@@ -1,9 +1,9 @@
 <script lang="ts">
-import type { ShoppingListRecipe, PersistentShoppingList, ShoppingListIngredient } from "./store";
+import type { ShoppingListRecipe, PersistentShoppingList, ShoppingListIngredient } from "./store.svelte";
 import { href } from "~/util";
 import ShoppingListDefaultItem from "./ShoppingListDefaultItem.svelte";
 
-export let store: PersistentShoppingList;
+let { store } = $props<{ store: PersistentShoppingList }>();
 
 // TODO replace with custom modal
 function deleteWithConfirm(item: ShoppingListRecipe): void {
@@ -18,7 +18,7 @@ function toggleMarked(recipe: ShoppingListRecipe, ingredient: ShoppingListIngred
 </script>
 
 <main class="max-w-lg mx-auto p-4">
-  {#each $store as recipe, idx (recipe.id)}
+  {#each store.recipes as recipe, idx (recipe.id)}
     <div class="flex items-center" class:mt-6={idx !== 0}>
       <a class="flex-shrink truncate" href={href("/recept/" + recipe.id)}>
         <h2

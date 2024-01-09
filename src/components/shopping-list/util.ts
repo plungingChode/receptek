@@ -1,5 +1,5 @@
 import type { Ingredient, MeasuredIngredient } from "~/types";
-import type { ShoppingListIngredient, ShoppingListRecipe } from "./store";
+import type { ShoppingListIngredient, ShoppingListRecipe } from "./store.svelte";
 
 export function isMeasuredIngredient(i: Ingredient): i is MeasuredIngredient {
   return "qty" in i;

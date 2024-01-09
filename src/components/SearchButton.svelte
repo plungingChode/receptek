@@ -2,7 +2,7 @@
 import SearchDialog from "./SearchDialog.svelte";
 import Portal from "svelte-portal";
 
-let dialogOpen = false;
+let dialogOpen = $state(false);
 
 const openDialog = () => (dialogOpen = true);
 const closeDialog = () => (dialogOpen = false);

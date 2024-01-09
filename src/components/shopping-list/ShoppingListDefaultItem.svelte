@@ -2,9 +2,11 @@
 import type { ShoppingListRecipe, ShoppingListIngredient } from "./store";
 import { isMeasuredIngredient } from "./util";
 
-export let toggleMarked: (recipe: ShoppingListRecipe, ingredient: ShoppingListIngredient) => void;
-export let recipe: ShoppingListRecipe;
-export let ingredient: ShoppingListIngredient;
+let { toggleMarked, recipe, ingredient } = $props<{
+  toggleMarked: (recipe: ShoppingListRecipe, ingredient: ShoppingListIngredient) => void;
+  recipe: ShoppingListRecipe;
+  ingredient: ShoppingListIngredient;
+}>();
 </script>
 
 <label class="ingredient flex px-4 py-2 mb-2" class:marked={ingredient.marked}>

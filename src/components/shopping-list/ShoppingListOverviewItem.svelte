@@ -1,20 +1,17 @@
-<script lang="ts" context="module">
-import type { ShoppingListRecipe, ShoppingListIngredient } from "./store";
-import { type CombinedIngredient, type IngredientWithSource, isMeasuredIngredient } from "./util";
-</script>
-
 <script lang="ts">
-export let setMarked: (recipeId: string, ingredientName: string, isMarked: boolean) => void;
-export let setGroupMarked: (group: CombinedIngredient, isMarked: boolean) => void;
-
+import type { ShoppingListRecipe, ShoppingListIngredient } from "./store.svelte";
+import { type CombinedIngredient, type IngredientWithSource, isMeasuredIngredient } from "./util";
 import { href } from "~/util";
 
-export let ingredient: CombinedIngredient;
+const { setMarked, setGroupMarked, ingredient } = $props<{
+  setMarked: (recipeId: string, ingredientName: string, isMarked: boolean) => void;
+  setGroupMarked: (group: CombinedIngredient, isMarked: boolean) => void;
+  ingredient: CombinedIngredient;
+}>();
 
-let isExpanded = false;
-
-$: allMarked = ingredient.marked === ingredient.combinedFrom.length;
-$: noneMarked = ingredient.marked === 0;
+let isExpanded = $state(false);
+const allMarked = $derived(ingredient.marked === ingredient.combinedFrom.length);
+const noneMarked = $derived(ingredient.marked === 0);
 
 function onIngredientCheckClick(ingredient: IngredientWithSource): () => void {
   return () => {
