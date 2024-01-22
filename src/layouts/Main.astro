@@ -11,14 +11,14 @@ interface Props {
 
 const { title, headerTitle, stickyHeader } = Astro.props;
 
-const documentTitle =
-  title
-  ? `${title} - Receptek`
-  : "Receptek";
+const documentTitle = title ? `${title} - Receptek` : "Receptek";
 ---
 
-<!DOCTYPE html>
-<html lang="hu-HU" class:list={["min-h-screen overflow-y-scroll", { "scroll-pt-16": stickyHeader }]}>
+<!doctype html>
+<html
+  lang="hu-HU"
+  class:list={["min-h-screen overflow-y-scroll", { "scroll-pt-16": stickyHeader }]}
+>
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -36,33 +36,6 @@ const documentTitle =
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"
     />
-
-    <script is:inline>
-      function prefersDark() {
-        if (typeof window !== "undefined") {
-          return window.matchMedia("(prefers-color-scheme: dark)").matches;
-        }
-        return false;
-      }
-      function getTheme() {
-        if (typeof localStorage !== "undefined") {
-          const theme = localStorage.getItem("theme");
-          if (theme) {
-            return theme;
-          }
-        }
-        if (prefersDark()) {
-          return "dark";
-        }
-        return "light";
-      }
-      const theme = getTheme();
-      if (theme !== "dark") {
-        document.documentElement.classList.remove("dark");
-      } else {
-        document.documentElement.classList.add("dark");
-      }
-    </script>
   </head>
   <body
     class:list={[
@@ -80,6 +53,55 @@ const documentTitle =
       <a href={href("/recept")}>{headerTitle ?? "Receptek"}</a>
       <div class="flex items-center ml-auto">
         <ThemeToggleButton client:load />
+        <script is:inline>
+          // Inlined to prevent flicker
+          function prefersDark() {
+            if (typeof window !== "undefined") {
+              return window.matchMedia("(prefers-color-scheme: dark)").matches;
+            }
+            return false;
+          }
+          function getTheme() {
+            if (typeof localStorage !== "undefined") {
+              const theme = localStorage.getItem("theme");
+              if (theme) {
+                return theme;
+              }
+            }
+            if (prefersDark()) {
+              return "dark";
+            }
+            return "light";
+          }
+          /**
+           * @param {HTMLElement} themeIcon
+           * @param {string|null} theme
+           */
+          function setThemeIcon(themeIcon, theme) {
+            if (theme === "dark") {
+              themeIcon.innerHTML = "dark_mode";
+              themeIcon.title = "Sötét téma";
+            } else if (theme === "light") {
+              themeIcon.innerHTML = "light_mode";
+              themeIcon.title = "Világos téma";
+            } else {
+              themeIcon.innerHTML = "brightness_medium";
+              themeIcon.title = "Rendszer téma";
+            }
+          }
+          const theme = getTheme();
+          if (theme !== "dark") {
+            document.documentElement.classList.remove("dark");
+          } else {
+            document.documentElement.classList.add("dark");
+          }
+
+          const themeIcon = document.querySelector("#theme-icon");
+          if (themeIcon !== null) {
+            setThemeIcon(/** @type {HTMLElement} */ (themeIcon), theme);
+          }
+        </script>
+
         <slot name="actions" />
       </div>
     </header>

@@ -56,10 +56,10 @@ const cycleTheme = () => {
   on:click={cycleTheme}
 >
   {#if theme === "dark"}
-    <span title="Sötét téma">dark_mode</span>
+    <span id="theme-icon" title="Sötét téma">dark_mode</span>
   {:else if theme === "light"}
-    <span title="Világos téma">light_mode</span>
+    <span id="theme-icon" title="Világos téma">light_mode</span>
   {:else}
-    <span title="Rendszer téma">brightness_medium</span>
+    <span id="theme-icon" title="Rendszer téma">brightness_medium</span>
   {/if}
 </button>
